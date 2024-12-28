@@ -6,28 +6,28 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 
-def e_shop_login(req):
-    if 'shop' in req.session:
+def shop_login(request):
+    if 'admin' in request.session:
         return redirect(shop_home)
-    if 'user' in req.session:
+    if 'user' in request.session:
         return redirect(user_home)
-    if req.method=='POST':
-        uname=req.POST['uname']
-        password=req.POST['password']
+    if request.method=='POST':
+        uname=request.POST['uname']
+        password=request.POST['password']
         data=authenticate(username=uname,password=password)
         if data:
-            login(req,data)
+            login(request,data)
             if data.is_superuser:
-                req.session['shop']=uname
+                request.session['admin']=uname
                 return redirect(shop_home)
             else:
-                req.session['user']=uname
+                request.session['user']=uname
                 return redirect(user_home)
         else:
-            messages.warning(req, "invalid password")
-            return redirect(e_shop_login)
+            messages.warning(request, "invalid password")
+            return redirect(shop_login)
     else:
-        return render(req,'login.html')
+        return render(request,'login.html')
 
 def shop_home(req):
    return render(req,'admin/home.html')
@@ -49,11 +49,20 @@ def Register(req):
         except:
             messages.warning(req,"username already exist")
             return redirect(Register)
-        return redirect(e_shop_login)
+        return redirect(shop_login)
     else:
         return render(req,'user/Register.html')
     
 def e_shop_logout(req):
     logout(req)
     req.session.flush()
-    return redirect(e_shop_login)
+    return redirect(shop_login)
+
+def contact(req):
+    return render(req,'user/contact.html')
+def about(req):
+    return render(req,'user/about.html')
+def services(req):
+    return render(req,'user/services.html')
+
+
