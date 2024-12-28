@@ -77,13 +77,13 @@ nav ul li a:hover {
     text-align: center;
     width: 100%;
     height: 700px;
-    position: relative; /* Add relative positioning to the hero container */
+    position: relative; 
 }
 
 /* Hero Content */
 .hero-content {
     position: absolute;
-    bottom: 20px; /* Adjust to place buttons near the bottom */
+    bottom: 20px; 
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -97,7 +97,7 @@ nav ul li a:hover {
     color: #fff;
     padding: 10px 20px;
     text-decoration: none;
-    margin: 10px 5px; /* Space between the buttons */
+    margin: 10px 5px; 
     border-radius: 4px;
     font-size: 1rem;
 }
@@ -107,7 +107,7 @@ nav ul li a:hover {
 }
 
 .hero-content .btn.telegram {
-    background: #0088cc; /* Telegram blue */
+    background: #0088cc; 
 }
 
 /* Hover Effects */
@@ -142,14 +142,177 @@ nav ul li a:hover {
     width: 50px;
     margin-bottom: 10px;
 }
-
-/* Footer */
-footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
+.sect {
+    width: 100%;
+    padding: 40px 0;
+    background-color: #f7f7f7;
 }
+
+.sect1 {
+    display: flex;
+    align-items: center;  
+    justify-content: center; 
+    gap: 30px;  
+    flex-wrap: wrap;  
+    max-width: 1200px;
+    margin: 0 auto;  
+    padding: 0 20px;
+}
+
+/* Image Styling */
+.image-container {
+    flex: 1;
+    max-width: 45%;  
+    min-width: 250px;
+    overflow: hidden;
+    border-radius: 8px; 
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;  
+    border-radius: 6px; 
+}
+
+/* Content Styling */
+.content-container {
+    flex: 2;
+    text-align: left;  
+    max-width: 55%; 
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2.5rem; 
+    text-align: center;  
+    color: #333;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #444;
+    margin-top: 20px;
+    text-transform: uppercase; 
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #666;
+    margin-top: 10px;
+    font-family: 'Arial', sans-serif;
+}
+/* General styles for sect2 */
+.sect2 {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-between;  
+    gap: 20px;  
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white; 
+}
+
+.sect2a {
+    flex: 1 1 100%;  
+    text-align: center;
+}
+
+.sect2a h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.sect2a p {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.sect2b, .sect2c, .sect2d {
+    flex: 1 1 30%;  
+    padding: 20px;
+    background-color: #fff;  
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  
+    text-align: center;
+    transition: transform 0.3s ease;  
+}
+
+.sect2b img, .sect2c img, .sect2d img {
+    width: 80px;
+    height: auto;
+    margin-top: 20px;
+}
+
+.sect2b h6, .sect2c h6, .sect2d h6 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.sect2b p, .sect2c p, .sect2d p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
+/* Hover effect for each section */
+.sect2b:hover, .sect2c:hover, .sect2d:hover {
+    transform: translateY(-10px); 
+}
+/* Custom styles for better spacing and design */
+.qn {
+    margin: 40px auto;
+    max-width: 800px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+
+
+.accordion-button {
+    background-color:white;
+    color:black;
+    border: none;
+    font-size: 1.1rem;
+    padding: 15px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color:white;
+}
+
+.accordion-body {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+    padding: 15px;
+    background-color: #f1f1f1;
+}
+
+.accordion-item {
+    margin-bottom: 10px;
+}
+
+.accordion-header {
+    margin-bottom: 10px;
+}
+
+
 </style>
 
 <body>
@@ -166,7 +329,7 @@ footer {
                 <li><a href="">Home</a></li>
                 <li><a href="about">About Us</a></li>
                 <li><a href="services">Services</a></li>
-                <li><a href="#">Tariff</a></li>
+                <li><a href="tariff">Tariff</a></li>
                 <li><a href="contact">Contact</a></li>
                 <li><a href="logout">logout</a></li>
 
@@ -184,8 +347,153 @@ footer {
         <a href="https://wa.me/9562826662" class="btn whatsapp">Whatsapp: +91 9562826662</a>
     </div>
 </section>
+<div class="sect">
+    <div class="sect1">
+        <div class="image-container">
+            <img src="{% static '/images/pexels-jeshoots-7405.jpg' %}" alt="sectimg">
+        </div>
+        <div class="content-container">
+            <h1>We Are Trusted Name in Car Renting Services</h1>
+            <h5 class="subtitle">For Riders</h5>
+            <p>We constantly experiment to come up with industry-first features for our riders that eventually become a norm.</p>
+            <h5 class="subtitle">For Drivers</h5>
+            <p>Our drivers get real-time stats to help optimize their rides better and earn more, straight from the app.</p>
+        </div>
+    </div>
+</div>
 
-</footer>
+<div class="sect2">
+    <div class="sect2a">
+        <h1>WHY CHOOSE CABS ?</h1>
+        <p> We are a pioneer in this industry with immense knowledge of Kerala tourism from over a decade.
+         We have a wide variety of taxi services from Kerala to all over south India to cater to your needs. We are specialized taxi service provider in  Kerala</p>
+    </div>
+    <div class="sect2b">
+        <h6>TRANSPARENT PRICING</h6>
+        <p>Best and affordable rates , no extra hidden charges .</p>
+        <img src="{% static '/images/money-2.png' %}" alt="sectimg">
+
+    </div>
+    <div class="sect2c">
+        <h6>EXPERIENCED DRIVERS</h6>
+        <p>Professional and well-mannered with multilingual skills</p>
+        <img src="{% static '/images/driver.png' %}" alt="sectimg">
+
+    </div>
+    <div class="sect2d">
+        <h6>QUALITY & SAFETY</h6>
+        <p>Modern fleet of cabs with round the clock customer support.</p>
+        <img src="{% static '/images/safety.png' %}" alt="sectimg">
+
+    </div>
+
+</div>
+<div class="qn">
+    <h1>FREQUENTLY ASKED QUESTIONS</h1>
+    <div class="qns">
+        <!-- Question 1 -->
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        What services does Travelhopper offer?
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Travelhopper offers a range of taxi services, including airport transfers, city tours, and inter-city travel within Kerala and beyond.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        How are your rates determined?
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Our rates are determined based on distance, type of vehicle, and duration of the journey. Additional fees may apply for tolls or extra services.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        How can I book a taxi with Travelhopper?
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        You can book a taxi through our website, mobile app, or by calling our customer service team directly.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        Which airports in Kerala do you service?
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        We service all major airports in Kerala, including Trivandrum, Cochin, and Calicut International Airports.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        Can I book a taxi upon arrival at the airport?
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, you can book a taxi directly at the airport. Our representatives will be available at the airport to assist you.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSix">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        What destinations can I travel to from the airport?
+                    </button>
+                </h2>
+                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        You can travel to any destination in Kerala and South India, including popular spots like Munnar, Cochin, Thekkady, and more.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSeven">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                        Can I book a taxi upon arrival at the airport?
+                    </button>
+                </h2>
+                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, you can book a taxi directly at the airport upon arrival.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 </body>
 </html>

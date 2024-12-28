@@ -64,5 +64,7 @@ def about(req):
     return render(req,'user/about.html')
 def services(req):
     return render(req,'user/services.html')
+def tariff(req):
+    return render(req,'user/tariff.html')
 
 
