@@ -6,6 +6,8 @@ urlpatterns=[
     path('',views.shop_login),
     path('shop_home',views.shop_home),
     path('logout',views.e_shop_logout),
+    path('add_cab',views.add_cabs),
+
     
 
 

@@ -66,7 +66,100 @@ nav ul li a:hover {
     background-color: #444;
     border-radius: 4px;
 }
+.container {
+            width: 90%;
+            margin: 20px auto;
+}
+.section {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 40px;
+}
+.section img {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 8px;
+}
+.section-content {
+            padding: 20px;
+            flex: 1;
+}
+.section-content h2 {
+            margin: 0 0 10px;
+            font-size: 1.8em;
+}
+.section-content p {
+            margin: 10px 0;
+}
+.section-content a {
+            color: #0073e6;
+            text-decoration: none;
+}
+.section-content a:hover {
+            text-decoration: underline;
+}
 
+.footer {
+      background-color: black;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+}
+.footer .container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 0 auto;
+}
+.footer .column {
+      flex: 1;
+      min-width: 200px;
+      margin: 10px;
+}
+.footer .column h3 {
+      margin-bottom: 10px;
+      text-transform: uppercase;
+}
+.footer .column a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      margin: 5px 0;
+      font-size: 14px;
+}
+.footer .column a:hover {
+      text-decoration: underline;
+}
+.footer .bottom-text {
+      margin-top: 20px;
+      font-size: 14px;
+}
+.footer .button {
+      background-color: #2ecc71;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 10px;
+      display: inline-block;
+}
+.footer .button:hover {
+      background-color: #27ae60;
+}
+.footer .social-icons {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+}
+.footer .social-icons a {
+      margin: 0 10px;
+}
+.footer .social-icons img {
+      width: 20px;
+      height: 20px;
+}
 
 </style>
 <body>
@@ -90,5 +183,72 @@ nav ul li a:hover {
             </nav>
         </div>
     </header> 
+    <div class="container">
+        <div class="section">
+            <img src="{% static '/images/responsive_big_webp_mRnrlzqZhNlyOTCzGFYvvKhWST8B2lPNLqvqeizQVRY.jpeg' %}">
+            <div class="section-content">
+                <h2>Sustainability</h2>
+                <p>
+                    Uber is committing to becoming a fully electric, zero-emission platform by 2040, with 100% of rides taking place in zero-emission vehicles, on public transit, or with micromobility. 
+                </p>
+                <p>
+                    It is our responsibility as the largest mobility platform in the world to more aggressively tackle the challenge of climate change. 
+                    We will do this by offering riders more ways to ride green, helping drivers go electric, making transparency a priority, and partnering with NGOs and the private sector to help expedite a clean and just energy transition.
+                </p>
+                <a href="#">Learn more</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <img src="{% static '/images/woman-using-ride-sharing-app-mobile-phone_746318-1322.webp' %}">
+            <div class="section-content">
+                <h2>Rides and Beyond</h2>
+                <p>
+                    In addition to helping riders find a way to go from point A to point B, we're helping people order food quickly and affordably, removing barriers to healthcare, creating new freight-booking solutions, and helping companies provide a seamless employee travel experience. 
+                </p>
+                <p>And always helping drivers and couriers earn.</p>
+                <a href="#">How to use the Uber app</a>
+                <br>
+                <a href="#">Our offerings</a>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+          <div class="column">
+            <h3>Company</h3>
+            <a href="about">About Us</a>
+            <a href="#">Media Coverage</a>
+            <a href="#">Careers</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Refunds</a>
+          </div>
+          <div class="column">
+            <h3>Services</h3>
+            <a href="#">Local Car Rentals</a>
+            <a href="#">Outstation Taxi</a>
+            <a href="#">One-way Cabs</a>
+            <a href="#">Corporate Car Rental</a>
+            <a href="#">Airport Taxi</a>
+          </div>
+          <div class="column">
+            <h3>Get In Touch</h3>
+            <a href="contact">Contact Us</a>
+            <a href="#">Sitemap</a>
+            <a href="#">XML Sitemap</a>
+            <div class="social-icons">
+              <a href="#"><img src="icon-facebook.png" alt="Facebook"></a>
+              <a href="#"><img src="icon-twitter.png" alt="Twitter"></a>
+              <a href="#"><img src="icon-instagram.png" alt="Instagram"></a>
+              <a href="#"><img src="icon-youtube.png" alt="YouTube"></a>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-text">
+          Savaari's Travel Magazine for 2025 - India Unmapped
+          <a href="#" class="button">Get Free Copy!</a>
+        </div>
+      </footer>
 </body>
 </html>

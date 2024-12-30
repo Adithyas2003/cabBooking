@@ -48,7 +48,7 @@ def add_cabs(req) :
             data.save()
             return redirect(shop_home)
         else:
-            return render(req,'admin/addproduct.html')
+            return render(req,'admin/add_cab.html')
     else:
         return redirect(shop_login) 
 

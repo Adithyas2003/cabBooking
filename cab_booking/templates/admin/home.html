@@ -183,6 +183,9 @@
                     <li><a href="services">Services</a></li>
                     <li><a href="#">Tariff</a></li>
                     <li><a href="contact">Contact</a></li>
+                    <li><a href="add_cab">add_cabs</a></li>
+                    
+
                     <li><a href="logout">Logout</a></li>
                 </ul>
             </nav>
@@ -204,14 +207,14 @@
         <div class="row">
             {% for cabs in Cab %}
             <div class="col-lg-4 mb-4">
-                <a href="view_cabs/{{ cabs.pk }}">
+                <a href="view_cabs/{{cabs.pk}}">
                     <div class="card">
-                        <img class="card-img-top" src="{{ cabs.img.url }}" alt="Card image" style="width: 100%; height: auto; object-fit: cover;">
+                        <img class="card-img-top" src="{{cabs.img.url}}" alt="Card image" style="width: 100%; height: auto; object-fit: cover;">
                         <div class="card-body">
-                            <h4 class="card-title">{{ cabs.number_plate }}</h4>
-                            <p class="card-text">{{ cabs.model }}</p>
-                            <h5 class="card-title">{{ cabs.driver_name }}</h5>
-                            <p class="card-text">{{ cabs.avilable }}</p>
+                            <h4 class="card-title">{{cabs.number_plate}}</h4>
+                            <p class="card-text">{{cabs.model}}</p>
+                            <h5 class="card-title">{{cabs.driver_name}}</h5>
+                            <p class="card-text">{{cabs.avilable}}</p>
                         </div>
                     </div>
                 </a>
