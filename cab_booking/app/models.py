@@ -8,5 +8,6 @@ class Cab(models.Model):
     model = models.CharField(max_length=50)
     driver_name = models.CharField(max_length=100)
     available = models.IntegerField()
+    img = models.FileField()
     def __str__(self):
         return f'{self.model} ({self.number_plate})'

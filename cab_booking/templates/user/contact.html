@@ -193,65 +193,38 @@ footer p {
             </nav>
         </div>
     </header> 
-     <!-- Contact Form Section -->
-     <section>
-        <h2>Send Us a Message</h2>
-        <form action="submit_form.php" method="POST">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" required>
+     
+     <div class="container">
+        <div class="contact-form">
+            <h2>Contact Us</h2>
+            <form action="#" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" class="form-control" rows="5" placeholder="Write your message here" required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Send Message</button>
+            </form>
+        </div>
+        
+        <div class="contact-info">
+            <h4>Our Contact Details</h4>
+            <p>Email: support@example.com</p>
+            <p>Phone: +123 456 7890</p>
+            <p>Address: 123 Learning Avenue, City, Country</p>
+        </div>
+    </div>
 
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required>
 
-            <label for="phone">Phone Number</label>
-            <input type="text" id="phone" name="phone">
-
-            <label for="subject">Subject</label>
-            <select id="subject" name="subject">
-                <option value="booking">Booking Inquiry</option>
-                <option value="payment">Payment Issue</option>
-                <option value="feedback">Feedback</option>
-                <option value="other">Other</option>
-            </select>
-
-            <label for="message">Your Message</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
-
-            <label for="captcha">Enter the number 123</label>
-            <input type="text" id="captcha" name="captcha" required>
-
-            <button type="submit">Send Message</button>
-        </form>
-    </section>
-
-    <!-- Social Media Section -->
-    <section>
-        <h2>Follow Us</h2>
-        <ul>
-            <li><a href="https://facebook.com/cabservice" target="_blank">Facebook</a></li>
-            <li><a href="https://twitter.com/cabservice" target="_blank">Twitter</a></li>
-            <li><a href="https://instagram.com/cabservice" target="_blank">Instagram</a></li>
-            <li><a href="https://linkedin.com/company/cabservice" target="_blank">LinkedIn</a></li>
-        </ul>
-    </section>
-
-    <!-- Live Chat Section (if applicable) -->
-    <section>
-        <h2>Need Immediate Assistance?</h2>
-        <button onclick="window.location.href='chat.html'">Start Live Chat</button>
-    </section>
-
-    <!-- Working Hours Section -->
-    <section>
-        <h2>Our Working Hours</h2>
-        <p>Monday to Friday: 9 AM - 6 PM</p>
-        <p>Saturday & Sunday: Closed</p>
-    </section>
-
-    <!-- Footer Section -->
-    <footer>
-        <p>&copy; 2024 Cab Booking Service. All rights reserved.</p>
-    </footer>
+   
 
 </body>
 </html>
