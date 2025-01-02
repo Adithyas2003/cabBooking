@@ -7,6 +7,8 @@ urlpatterns=[
     path('shop_home',views.shop_home),
     path('logout',views.e_shop_logout),
     path('add_cab',views.add_cabs),
+    path('edit_cab/<pid>',views.edit_cabs),
+    path('delete_cab/<pid>',views.delete_cabs),
 
     
 

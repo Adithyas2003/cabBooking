@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from .models import *
+import os
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -51,6 +52,59 @@ def add_cabs(req) :
             return render(req,'admin/add_cab.html')
     else:
         return redirect(shop_login) 
+
+def edit_cabs(req,pid):
+    if req.method=='POST':
+         
+            number_plate=req.POST['number_plate']
+            model=req.POST['model']
+            driver_name=req.POST['driver_name']
+            available=req.POST['available']
+            file=req.FILES.get('img')
+            if file:
+                Cab.objects.filter(pk=pid).update(number_plate=number_plate,model=model,driver_name=driver_name,available=available)
+                data=Cab.objects.get(pk=pid)
+                data.img=file
+                data.save()
+            else:
+                Cab.objects.filter(pk=pid).update(number_plate=number_plate,model=model,driver_name=driver_name,available=available)
+                return redirect(shop_home)
+    else:
+        data=Cab.objects.get(pk=pid)
+        return render(req,'admin/edit_cab.html',{'data':data})
+
+def delete_cabs(req,pid):
+    data=Cab.objects.get(pk=pid)
+    file=data.img.url
+    file=file.split('/')[-1]
+    os.remove('media/'+file)
+    data.delete()
+    return redirect(shop_home)
+
+def cart_pro_buy(req,cid):
+    cart=cart.objects.get(pk=cid)
+    product=cart.Product
+    user=cart.user
+    qty=cart.qty
+    price=product.offer_price*qty
+    buy=Buy.objects.create(Product=product,user=user,qty=qty,price=price)
+    buy.save()
+    return redirect(bookings)
+
+def pro_buy(req,pid):
+    Products=Cab.objects.get(pk=pid)
+    user=User.objects.get(username=req.session['user'])
+    qty=1
+    price=Products.offer_price
+    buy=Buy.objects.create(Product=Products,user=user,qty=qty,price=price)
+    buy.save()
+    return redirect(bookings)
+
+
+def bookings(req):
+    user=User.objects.get(username=req.session['user'])
+    buy=Buy.objects.filter(user=user)[::-1]
+    return render(req,'user/bookings.html',{'bookings':buy})
 
 
 def user_home(req):

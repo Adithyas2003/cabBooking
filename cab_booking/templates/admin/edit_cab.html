@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+ <html lang="en">
+ 
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Add Products Page</title>
+     
+     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+ </head>
+ 
+ <body>
+     <div class="container mt-5">
+         <!-- <h2 class="text-center mb-4">Add New Product</h2> -->
+         <form action="" method="post" class="p-4 shadow-sm bg-white rounded" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="number_plate">Number Plate</label>
+                <input type="text" id="number_plate" value="{{data.number_plate}}" name="number_plate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="model">Model</label>
+                <input type="text" id="model" value="{{data.model }}" name="model" required>
+            </div>
+
+            <div class="form-group">
+                <label for="driver_name">Driver Name</label>
+                <input type="text" id="driver_name"  value="{{data.driver_name}}" name="driver_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="available">Availability</label>
+                <input type="number" id="available" value="{{data.available}}" name="available" required>
+            </div>
+            
+
+             <img src="{{data.img.url}}" alt="" style="width: 400px; height: 400px;">
+ 
+             <div class="form-group">
+                <label for="img"><b>Image</b></label>
+                <input type="file" class="form-control-file" name="img" id="img">
+            </div>
+           
+ 
+             <button type="submit" class="btn btn-primary btn-block">edit cab</button>
+         </form>
+     </div>
+ 
+     
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ </body>
+ 
+ </html>
