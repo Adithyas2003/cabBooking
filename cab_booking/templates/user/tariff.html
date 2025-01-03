@@ -149,13 +149,8 @@ caption {
         </div>
     </header> 
     <img src="{% static '/images/20240628153713-image_2024_06_28T10_03_47_918Z.png' %}" alt="sectimg" width="100%" height="auto">
-    
 
-
-</head>
-<body>
-
-  <div class="container">
+<div class="container">
     <caption>Vehicle Rental Details</caption>
     <table>
       <thead>
@@ -165,6 +160,7 @@ caption {
           <th>Rate Per Day</th>
           <th>Allowed KM Per Day</th>
           <th>Cost for Extra KM</th>
+          <th>Action</th> <!-- New column for "Book Now" -->
         </tr>
       </thead>
       <tbody>
@@ -175,6 +171,7 @@ caption {
           <td>$40</td>
           <td>100 KM</td>
           <td>$0.20 per KM</td>
+          <td><button class="action-btn" onclick="window.location.href='book_hatchback'">Book Now</button></td> <!-- Book Now button -->
         </tr>
         <!-- Example Row 2 -->
         <tr>
@@ -183,6 +180,7 @@ caption {
           <td>$70</td>
           <td>150 KM</td>
           <td>$0.30 per KM</td>
+          <td><button class="action-btn" onclick="window.location.href='book_suv'">Book Now</button></td> <!-- Book Now button -->
         </tr>
         <!-- Example Row 3 -->
         <tr>
@@ -191,6 +189,7 @@ caption {
           <td>$100</td>
           <td>100 KM</td>
           <td>$0.50 per KM</td>
+          <td><button class="action-btn" onclick="window.location.href='book_sedan'">Book Now</button></td> <!-- Book Now button -->
         </tr>
         <!-- Example Row 4 -->
         <tr>
@@ -199,6 +198,7 @@ caption {
           <td>$120</td>
           <td>200 KM</td>
           <td>$0.40 per KM</td>
+          <td><button class="action-btn" onclick="window.location.href='book_minivan'">Book Now</button></td> <!-- Book Now button -->
         </tr>
         <!-- Example Row 5 -->
         <tr>
@@ -207,11 +207,11 @@ caption {
           <td>$150</td>
           <td>80 KM</td>
           <td>$0.60 per KM</td>
+          <td><button class="action-btn" onclick="window.location.href='book_vehicle'">Book Now</button></td> <!-- Book Now button -->
         </tr>
       </tbody>
     </table>
-    
-  </div>
+</div>
 
 </body>
 </html>

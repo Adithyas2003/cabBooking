@@ -9,6 +9,8 @@ urlpatterns=[
     path('add_cab',views.add_cabs),
     path('edit_cab/<pid>',views.edit_cabs),
     path('delete_cab/<pid>',views.delete_cabs),
+    path('view_bookings/<pid>',views.delete_cabs),
+
 
     
 
@@ -22,6 +24,10 @@ urlpatterns=[
     path('about',views.about),
     path('services',views.services),
     path('tariff',views.tariff),
+    path('booking_confirmation',views.booking_confirmation),
+    path('book_form/',views.book_vehicle),
+
+
 
 
 

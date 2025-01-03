@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import *
 import os
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your views here.
 
@@ -44,8 +45,9 @@ def add_cabs(req) :
             model=req.POST['model']
             driver_name=req.POST['driver_name']
             available=req.POST['available']
+            price=req.POST['price']
             file=req.FILES['img']
-            data=Cab.objects.create(number_plate=number_plate,model=model,driver_name=driver_name,available=available,img=file)
+            data=Cab.objects.create(number_plate=number_plate,model=model,driver_name=driver_name,available=available,price=price,img=file)
             data.save()
             return redirect(shop_home)
         else:
@@ -60,14 +62,15 @@ def edit_cabs(req,pid):
             model=req.POST['model']
             driver_name=req.POST['driver_name']
             available=req.POST['available']
+            price=req.POST['price']
             file=req.FILES.get('img')
             if file:
-                Cab.objects.filter(pk=pid).update(number_plate=number_plate,model=model,driver_name=driver_name,available=available)
+                Cab.objects.filter(pk=pid).update(number_plate=number_plate,model=model,driver_name=driver_name,available=available,price=price)
                 data=Cab.objects.get(pk=pid)
                 data.img=file
                 data.save()
             else:
-                Cab.objects.filter(pk=pid).update(number_plate=number_plate,model=model,driver_name=driver_name,available=available)
+                Cab.objects.filter(pk=pid).update(number_plate=number_plate,model=model,driver_name=driver_name,available=available,price=price)
                 return redirect(shop_home)
     else:
         data=Cab.objects.get(pk=pid)
@@ -81,37 +84,80 @@ def delete_cabs(req,pid):
     data.delete()
     return redirect(shop_home)
 
-def cart_pro_buy(req,cid):
-    cart=cart.objects.get(pk=cid)
-    product=cart.Product
-    user=cart.user
-    qty=cart.qty
-    price=product.offer_price*qty
-    buy=Buy.objects.create(Product=product,user=user,qty=qty,price=price)
-    buy.save()
-    return redirect(bookings)
+# def cart_pro_buy(req,cid):
+#     cart=cart.objects.get(pk=cid)
+#     product=cart.Product
+#     user=cart.user
+#     qty=cart.qty
+#     price=product.offer_price*qty
+#     buy=Buy.objects.create(Product=product,user=user,qty=qty,price=price)
+#     buy.save()
+#     return redirect(bookings)
 
-def pro_buy(req,pid):
-    Products=Cab.objects.get(pk=pid)
-    user=User.objects.get(username=req.session['user'])
-    qty=1
-    price=Products.offer_price
-    buy=Buy.objects.create(Product=Products,user=user,qty=qty,price=price)
-    buy.save()
-    return redirect(bookings)
+# def pro_buy(req,pid):
+#     Products=Cab.objects.get(pk=pid)
+#     user=User.objects.get(username=req.session['user'])
+#     qty=1
+#     price=Products.offer_price
+#     buy=Buy.objects.create(Product=Products,user=user,qty=qty,price=price)
+#     buy.save()
+#     return redirect(bookings)
 
 
-def bookings(req):
-    user=User.objects.get(username=req.session['user'])
-    buy=Buy.objects.filter(user=user)[::-1]
-    return render(req,'user/bookings.html',{'bookings':buy})
+# def bookings(req):
+#     user=User.objects.get(username=req.session['user'])
+#     buy=Buy.objects.filter(user=user)[::-1]
+#     return render(req,'user/bookings.html',{'bookings':buy})
 
+def book_vehicle(request, pid):
+    if request.method == 'POST':
+      
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+
+        try:
+            start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+            end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+        except ValueError:
+            return render(request, 'user/bookingform.html', {'error': 'Invalid date format'})
+
+        
+        try:
+            vehicle = Cab.objects.get(id=vehicle)
+        except Cab.DoesNotExist:
+            return redirect(shop_home)  
+
+        
+        booking = Booking(
+            user=request.user,
+            vehicle=vehicle,
+            start_date=start_date,
+            end_date=end_date
+        )
+
+       
+        booking.save()
+
+        return redirect('bookingconfir', confirmation_code=booking.confirmation_code,
+                        vehicle_model=vehicle.model, start_date=start_date, end_date=end_date)
+
+    return render(request, 'user/bookingform.html', {'pid': pid})
+
+
+
+def booking_confirmation(request, confirmation_code, vehicle_model, start_date, end_date):
+    return render(request, 'booking_confir.html', {
+        'confirmation_code': confirmation_code,
+        'vehicle_model': vehicle_model,
+        'start_date': start_date,
+        'end_date': end_date
+    })
 
 def user_home(req):
     if 'user' in req.session:
         data=Cab.objects.all()
     cabs=Cab.objects.all()
-    return render(req,'user/home.html',{'Cab':cabs})
+    return render(req,'home.html',{'Cab':cabs})
 
 
 def Register(req):
