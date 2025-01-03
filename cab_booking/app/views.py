@@ -109,44 +109,33 @@ def delete_cabs(req,pid):
 #     buy=Buy.objects.filter(user=user)[::-1]
 #     return render(req,'user/bookings.html',{'bookings':buy})
 
-def book_vehicle(request, pid):
+
+def book_form(request, pid):
+    # Get the selected vehicle (Cab)
+    vehicle = Cab.objects.get(id=pid)
+    
     if request.method == 'POST':
-      
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
+        # Process the form
+        form = Booking(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.user = request.user
+            booking.vehicle = vehicle
+            booking.save()
 
-        try:
-            start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-            end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
-        except ValueError:
-            return render(request, 'user/bookingform.html', {'error': 'Invalid date format'})
+            # Redirect to booking confirmation page
+            return redirect('booking_confirmation', confirmation_code=booking.confirmation_code)
 
-        
-        try:
-            vehicle = Cab.objects.get(id=vehicle)
-        except Cab.DoesNotExist:
-            return redirect(shop_home)  
+    else:
+        # Render empty form
+        form = Booking(vehicle=vehicle)
 
-        
-        booking = Booking(
-            user=request.user,
-            vehicle=vehicle,
-            start_date=start_date,
-            end_date=end_date
-        )
-
-       
-        booking.save()
-
-        return redirect('bookingconfir', confirmation_code=booking.confirmation_code,
-                        vehicle_model=vehicle.model, start_date=start_date, end_date=end_date)
-
-    return render(request, 'user/bookingform.html', {'pid': pid})
+    return render(request, 'user/bookingform.html', {'form': form, 'vehicle': vehicle})
 
 
 
 def booking_confirmation(request, confirmation_code, vehicle_model, start_date, end_date):
-    return render(request, 'booking_confir.html', {
+    return render(request, 'user/booking_confir.html', {
         'confirmation_code': confirmation_code,
         'vehicle_model': vehicle_model,
         'start_date': start_date,
@@ -157,7 +146,10 @@ def user_home(req):
     if 'user' in req.session:
         data=Cab.objects.all()
     cabs=Cab.objects.all()
-    return render(req,'home.html',{'Cab':cabs})
+    return render(req,'user/home.html',{'Cab':cabs})
+
+def book_hatchback(request):
+    return render(request, 'user/book_hatchback.html')
 
 
 def Register(req):
