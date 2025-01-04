@@ -24,9 +24,13 @@ urlpatterns=[
     path('about',views.about),
     path('services',views.services),
     path('tariff',views.tariff),
-    path('booking_confirmation',views.booking_confirmation),
+    path(' booking_confirmation',views. booking_confirmation),
     path('book_vehicle/<int:pid>/', views.book_form),
-    path('book_hatchback', views.book_hatchback),
+    path(' book_form',views. booking_confirmation),
+    path(' book_now',views. book_now),
+
+
+    
 
 
 

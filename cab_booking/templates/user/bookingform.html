@@ -30,19 +30,11 @@
         </div>
     </header> 
 
-    <form method="post">
+    <form method="POST" action="{% url 'submit_booknow' %}">
         {% csrf_token %}
-        <label for="start_date">Start Date:</label>
-        <input type="date" id="start_date" name="start_date" required>
-        <br><br>
-        <label for="end_date">End Date:</label>
-        <input type="date" id="end_date" name="end_date" required>
-        <br><br>
-        <button type="submit">Book Now</button>
+        <!-- Your form fields here -->
+        <button type="submit" class="btn btn-success">Submit Booking</button>
     </form>
-
-    {% if error %}
-        <div style="color:red">{{ error }}</div>
-    {% endif %}
+    
 </body>
 </html>

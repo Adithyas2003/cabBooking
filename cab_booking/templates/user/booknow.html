@@ -14,23 +14,39 @@
     </header>
 
     <div class="container">
-        <h2>Book Hatchback</h2>
-        <form method="POST" action="/submit_hatchback_booking">
+        <h2>Book Now</h2>
+        <form method="POST" action="/submit_booknow">
             {% csrf_token %}
+            
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
+            
             <div class="mb-3">
                 <label for="date" class="form-label">Booking Date</label>
                 <input type="date" class="form-control" id="date" name="date" required>
             </div>
+
+            <div class="mb-3">
+                <label for="arrival" class="form-label">Arrival Location</label>
+                <input type="text" class="form-control" id="arrival" name="arrival" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="destination" class="form-label">Destination Location</label>
+                <input type="text" class="form-control" id="destination" name="destination" required>
+            </div>
+            
             <button type="submit" class="btn btn-success">Submit Booking</button>
         </form>
+
+        {% if confirmation_code %}
+            <div class="alert alert-success mt-3">
+                Your booking has been confirmed! Your confirmation code is: {{ confirmation_code }}
+            </div>
+        {% endif %}
     </div>
 </body>
 </html>
+

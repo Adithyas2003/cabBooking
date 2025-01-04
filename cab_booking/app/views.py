@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import *
 import os
 from django.contrib.auth.models import User
+import random
 from datetime import datetime
 
 # Create your views here.
@@ -110,12 +111,13 @@ def delete_cabs(req,pid):
 #     return render(req,'user/bookings.html',{'bookings':buy})
 
 
+
 def book_form(request, pid):
-    # Get the selected vehicle (Cab)
+   
     vehicle = Cab.objects.get(id=pid)
     
     if request.method == 'POST':
-        # Process the form
+      
         form = Booking(request.POST)
         if form.is_valid():
             booking = form.save(commit=False)
@@ -123,24 +125,22 @@ def book_form(request, pid):
             booking.vehicle = vehicle
             booking.save()
 
-            # Redirect to booking confirmation page
+            
             return redirect('booking_confirmation', confirmation_code=booking.confirmation_code)
 
     else:
-        # Render empty form
+        
         form = Booking(vehicle=vehicle)
 
     return render(request, 'user/bookingform.html', {'form': form, 'vehicle': vehicle})
 
 
+def booking_confirmation(request, confirmation_code):
+    # Display the booking confirmation with the OTP code
+    
+    return render(request, 'user/bookconfir.html', {'confirmation_code': confirmation_code})
 
-def booking_confirmation(request, confirmation_code, vehicle_model, start_date, end_date):
-    return render(request, 'user/booking_confir.html', {
-        'confirmation_code': confirmation_code,
-        'vehicle_model': vehicle_model,
-        'start_date': start_date,
-        'end_date': end_date
-    })
+
 
 def user_home(req):
     if 'user' in req.session:
@@ -148,8 +148,8 @@ def user_home(req):
     cabs=Cab.objects.all()
     return render(req,'user/home.html',{'Cab':cabs})
 
-def book_hatchback(request):
-    return render(request, 'user/book_hatchback.html')
+def book_now(request):
+    return render(request, 'user/booknow.html')
 
 
 def Register(req):
