@@ -6,6 +6,7 @@ import os
 from django.contrib.auth.models import User
 import random
 from datetime import datetime
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -171,18 +172,50 @@ def booking_confirmation(request):
     return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
 
 
-def book_now(request):
-    return render(request, 'user/booknow.html')
+# def book_now(request):
+#     return render(request, 'user/booknow.html')
 
+
+def book_now(request):
+    if request.method == "POST":
+        # Extract data from the form
+        user = request.POST.get('name')
+        vehicle = request.POST.get('vehicle')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        total_amount = request.POST.get('total_amount')
+        status = request.POST.get('status')
+
+        # Validate the form inputs (optional)
+        if not all([user, vehicle, start_date, end_date, total_amount, status]):
+            return HttpResponse("Please fill out all the fields.", status=400)
+
+        # Generate a confirmation code
+        confirmation_code = str(random.randint(100000, 999999))
+
+        # Pass the confirmation code and data to the template
+        return render(request, 'user/booknow.html', {
+            'confirmation_code': confirmation_code,
+            'user': user,
+            'vehicle': vehicle,
+            'start_date': start_date,
+            'end_date': end_date,
+            'total_amount': total_amount,
+            'status': status,
+        })
+
+
+    # If it's a GET request (form initially loaded)
+    return render(request, 'user/booknow.html')
 
 def submit_booknow(request):
     if request.method == 'POST':
         
         confirmation_code = generate_otp()
 
-        return redirect('booking_confirmation', confirmation_code=confirmation_code)
+        return redirect('booking_confirmation', confirmation_code=Booking.confirmation_code)
 
-    return render(request, 'user/submit_booknow.html/')
+    return render(request, 'user/submit_booknow.html/',)
 def user_home(req):
     if 'user' in req.session:
         data=Cab.objects.all()
