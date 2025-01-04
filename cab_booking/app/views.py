@@ -112,44 +112,83 @@ def delete_cabs(req,pid):
 
 
 
-def book_form(request, pid):
+# def book_form(request, pid):
    
+#     vehicle = Cab.objects.get(id=pid)
+    
+#     if request.method == 'POST':
+      
+#         form = Booking(request.POST)
+#         if form.is_valid():
+#             booking = form.save(commit=False)
+#             booking.user = request.user
+#             booking.vehicle = vehicle
+#             booking.save()
+
+            
+#             return redirect('booking_confirmation', confirmation_code=booking.confirmation_code)
+
+#     else:
+        
+#         form = Booking(vehicle=vehicle)
+
+#     return render(request, 'user/bookingform.html', {'form': form, 'vehicle': vehicle})
+
+
+def generate_otp(length=6):
+    otp = ''.join(random.choices('0123456789', k=length))  
+    return otp
+
+# Booking form view
+def book_form(request, pid):
     vehicle = Cab.objects.get(id=pid)
     
     if request.method == 'POST':
-      
         form = Booking(request.POST)
         if form.is_valid():
-            booking = form.save(commit=False)
-            booking.user = request.user
-            booking.vehicle = vehicle
-            booking.save()
-
             
-            return redirect('booking_confirmation', confirmation_code=booking.confirmation_code)
+            Booking = form.save(commit=False)
+            Booking.user = request.user
+            Booking.vehicle = vehicle
+            
+           
+            confirmation_code = generate_otp()
+            Booking.confirmation_code = confirmation_code  
+            Booking.save()
+
+           
+            return redirect('booking_confirmation', confirmation_code=Booking.confirmation_code)
 
     else:
-        
         form = Booking(vehicle=vehicle)
 
     return render(request, 'user/bookingform.html', {'form': form, 'vehicle': vehicle})
 
 
-def booking_confirmation(request, confirmation_code):
-    # Display the booking confirmation with the OTP code
-    
-    return render(request, 'user/bookconfir.html', {'confirmation_code': confirmation_code})
+def booking_confirmation(request):
+    confirmation_code = generate_otp()  # Generate the confirmation code
+    print(f"Generated OTP: {confirmation_code}")  # Debugging line, check in the console
+    return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
 
 
+def book_now(request):
+    return render(request, 'user/booknow.html')
 
+
+def submit_booknow(request):
+    if request.method == 'POST':
+        
+        confirmation_code = generate_otp()
+
+        return redirect('booking_confirmation', confirmation_code=confirmation_code)
+
+    return render(request, 'user/submit_booknow.html/')
 def user_home(req):
     if 'user' in req.session:
         data=Cab.objects.all()
     cabs=Cab.objects.all()
     return render(req,'user/home.html',{'Cab':cabs})
 
-def book_now(request):
-    return render(request, 'user/booknow.html')
 
 
 def Register(req):
