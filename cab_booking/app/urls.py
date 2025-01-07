@@ -9,7 +9,7 @@ urlpatterns=[
     path('add_cab',views.add_cabs),
     path('edit_cab/<pid>',views.edit_cabs),
     path('delete_cab/<pid>',views.delete_cabs),
-    path('view_bookings/<pid>',views.delete_cabs),
+    path('view_bookings',views.view_bookings),
 
 
     

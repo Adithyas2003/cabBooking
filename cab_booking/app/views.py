@@ -186,14 +186,12 @@ def book_now(request):
         total_amount = request.POST.get('total_amount')
         status = request.POST.get('status')
 
-        # Validate the form inputs (optional)
         if not all([user, vehicle, start_date, end_date, total_amount, status]):
             return HttpResponse("Please fill out all the fields.", status=400)
 
-        # Generate a confirmation code
         confirmation_code = str(random.randint(100000, 999999))
 
-        # Pass the confirmation code and data to the template
+       
         return render(request, 'user/booknow.html', {
             'confirmation_code': confirmation_code,
             'user': user,
@@ -205,7 +203,8 @@ def book_now(request):
         })
 
 
-    # If it's a GET request (form initially loaded)
+
+  
     return render(request, 'user/booknow.html')
 
 def submit_booknow(request):
@@ -254,4 +253,21 @@ def services(req):
 def tariff(req):
     return render(req,'user/tariff.html')
 
+def view_bookings(request):
+    if request.method == "POST":
+       
+        user = request.POST.get('name')
+        vehicle = request.POST.get('vehicle')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        total_amount = request.POST.get('total_amount')
+        status = request.POST.get('status')
 
+        if not all([user, vehicle, start_date, end_date, total_amount, status]):
+            return HttpResponse("Please fill out all the fields.", status=400)
+       
+        confirmation_code = str(random.randint(100000, 999999))
+        confirmation_code.save()
+
+    bookings = Booking.objects.all()
+    return render(request, 'admin/view_bookings.html', {'bookings': bookings})
