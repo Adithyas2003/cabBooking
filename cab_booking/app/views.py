@@ -178,7 +178,7 @@ def booking_confirmation(request):
 
 def book_now(request):
     if request.method == "POST":
-        # Extract data from the form
+        
         user = request.POST.get('name')
         vehicle = request.POST.get('vehicle')
         start_date = request.POST.get('start_date')
@@ -190,22 +190,45 @@ def book_now(request):
             return HttpResponse("Please fill out all the fields.", status=400)
 
         confirmation_code = str(random.randint(100000, 999999))
+        data=Booking.objects.create(user=user,vehicle=vehicle,start_date=start_date,end_date=end_date,total_amount=total_amount,status=status)
+        data.save()
+        return render(request, 'user/booknow.html')
 
-       
-        return render(request, 'user/booknow.html', {
-            'confirmation_code': confirmation_code,
-            'user': user,
-            'vehicle': vehicle,
-            'start_date': start_date,
-            'end_date': end_date,
-            'total_amount': total_amount,
-            'status': status,
-        })
+        # return render(request, 'user/booknow.html', {
+        #     'confirmation_code': confirmation_code,
+        #     'user': user,
+        #     'vehicle': vehicle,
+        #     'start_date': start_date,
+        #     'end_date': end_date,
+        #     'total_amount': total_amount,
+        #     'status': status,
+        # })
+
+        
+
+# def book_now(request):
+#     if request.method == 'POST':
+#         user = request.POST.get('name')
+#         vehicle = request.POST.get('vehicle')
+#         start_date = request.POST.get('start_date')
+#         end_date = request.POST.get('end_date')
+#         # confirmation_code = request.POST.get('total_amount')
+#         total_amount = request.POST.get('total_amount')
+#         status = request.POST.get('status')
+
+
+#         data = Booking(name=user,vehicle=vehicle,start_date=start_date,end_date=end_date,total_amount=total_amount,status=status)
+#         data.save()
+
+#         return redirect(book_now)
+
+#     bookings = Booking.objects.all()
+
+#     return render(request, 'user/booknow.html', {'book_now': bookings})
 
 
 
-  
-    return render(request, 'user/booknow.html')
+
 
 def submit_booknow(request):
     if request.method == 'POST':
@@ -262,7 +285,6 @@ def view_bookings(request):
         end_date = request.POST.get('end_date')
         total_amount = request.POST.get('total_amount')
         status = request.POST.get('status')
-
         if not all([user, vehicle, start_date, end_date, total_amount, status]):
             return HttpResponse("Please fill out all the fields.", status=400)
        
