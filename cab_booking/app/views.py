@@ -176,6 +176,15 @@ def booking_confirmation(request):
 #     return render(request, 'user/booknow.html')
 
 
+# def pro_buy(req,pid):
+#     product=Product.objects.get(pk=pid)
+#     user=User.objects.get(username=req.session['user'])
+#     qty=1
+#     price=product.offer_price
+#     buy=Buy.objects.create(Product=product,user=user,qty=qty,price=price)
+#     buy.save()
+#     return redirect(bookings)
+
 def book_now(request):
     if request.method == "POST":
         
@@ -183,16 +192,26 @@ def book_now(request):
         vehicle = request.POST.get('vehicle')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
-        total_amount = request.POST.get('total_amount')
-        status = request.POST.get('status')
+      
 
-        if not all([user, vehicle, start_date, end_date, total_amount, status]):
+        if not all([user, vehicle, start_date, end_date]):
             return HttpResponse("Please fill out all the fields.", status=400)
 
         confirmation_code = str(random.randint(100000, 999999))
-        data=Booking.objects.create(user=user,vehicle=vehicle,start_date=start_date,end_date=end_date,total_amount=total_amount,status=status)
+        data=Booking.objects.create(user=user,vehicle=vehicle,start_date=start_date,end_date=end_date,total_amount=400,status='pending')
         data.save()
+    else:
+        print('data save')
+       
         return render(request, 'user/booknow.html')
+    product=Cab.objects.get(pk=id)
+    user=User.objects.get(username=request.session['user'])
+    start_date=21-10-2024
+    end_date=22-10-24
+    price=product.offer_price
+    booking=Booking.objects.create(Product=product,user=user,start_date=start_date,end_date=end_date,price=price)
+    booking.save()
+    return redirect(book_now)
 
         # return render(request, 'user/booknow.html', {
         #     'confirmation_code': confirmation_code,
