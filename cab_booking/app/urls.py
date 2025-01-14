@@ -28,6 +28,7 @@ urlpatterns=[
     # path('book_vehicle/<int:pid>/', views.book_form),
     path('book_form/<int:pid>/',views. book_form),
     path('book_now/',views. book_now),
+    path('bookings/',views. bookings),
     path('submit_booknow/',views. submit_booknow),
 
 
