@@ -123,22 +123,20 @@
 
 
     <div class="container">
-        <div class="row">
-          {% for bookings in Booking %}
-          <div class="col-lg-12">
-            <div class="col-lg-7">
-              <h1 class="mb-3">{{bookings.user }}</h1>
-              <p>vehicle: <span class="text-success fw-bold">${{bookings.vehicle}}</span></p>
-              <p>start_date:<span class="text-success fw-bold">{{bookings.start_date}}</span></p>
-              <p>end_date:<span class="text-success fw-bold">{{bookings.end_date}}</span></p>
-              <p>confirmation_code:<span class="text-success fw-bold">{{bookings.confirmation_code}}</span></p>
-              <p>total_amount:<span class="text-success fw-bold">{{bookings.total_amount}}</span></p>
-              <p>status:<span class="text-success fw-bold">{{bookings.status}}</span></p>
+        
+        {% if confirmation_code %}
+            <div class="alert alert-success mt-3">
+                <strong>Booking Confirmed!</strong><br>
+                Confirmation Code: {{ confirmation_code }}<br>
+                User: {{ user }}<br>
+                Vehicle: {{ vehicle }}<br>
+                Start Date: {{ start_date }}<br>
+                End Date: {{ end_date }}<br>
+                Total Amount: {{ total_amount }}<br>
+                Status: {{ status }}
             </div>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-
+        {% else %}
+    </div>
+    {% endif %}
 </body>
 </html>

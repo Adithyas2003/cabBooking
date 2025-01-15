@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from .models import *
+from .forms import *
+from django.utils.crypto import get_random_string
 import os
 from django.contrib.auth.models import User
 import random
@@ -186,89 +188,38 @@ def booking_confirmation(request):
 #     buy.save()
 #     return redirect(bookings)
 
-
 def book_now(request):
-    if request.method == "POST":
-        username = request.POST.get('name')
-        vehicle_id = request.POST.get('vehicle')
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-
-        if not all([username, vehicle_id, start_date, end_date]):
-            messages.error(request, "Please fill out all the fields.")
-            return redirect('book_now')  # Redirect back to the book_now page
-
-        try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            messages.error(request, "User not found. Please check your username or sign up.")
-            return redirect('book_now')  # Redirect back to the book_now page
-
-        try:
-            vehicle = Cab.objects.get(pk=vehicle_id)
-        except Cab.DoesNotExist:
-            messages.error(request, "Vehicle not found.")
-            return redirect('book_now')  # Redirect back to the book_now page
-
-        confirmation_code = str(random.randint(100000, 999999))
-
-        booking = Booking.objects.create(
-            user=user,
-            vehicle=vehicle,
-            start_date=start_date,
-            end_date=end_date,
-            total_amount=400,  # Static price, adjust as needed
-            status='pending',
-            confirmation_code=confirmation_code  # Store confirmation code
-        )
-        booking.save()
-
-        messages.success(request, "Booking was successful! You will receive a confirmation soon.")
-        return redirect('bookings')  # Make sure this URL pattern name exists in your urls.py
-
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            vehicle = form.cleaned_data['vehicle']
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+            
+            confirmation_code = get_random_string(length=8)
+            total_amount = 100  
+            status = "Confirmed"
+            data=Booking(user=name,vehicle=vehicle,start_date=start_date,end_date=end_date,confirmation_code=confirmation_code,total_amount=total_amount,status=status)
+            data.save()
+            context = {
+                'confirmation_code': confirmation_code,
+                'user': name,
+                'vehicle': vehicle,
+                'start_date': start_date,
+                'end_date': end_date,
+                'total_amount': total_amount,
+                'status': status
+            }
+            
+            return render(request, 'user/booknow.html', context)
     else:
-        return render(request, 'user/booknow.html')
+        form = BookingForm()
+    
+    return render(request, 'user/booknow.html', {'form': form})
 
-        # return render(request, 'user/booknow.html', {
-        #     'confirmation_code': confirmation_code,
-        #     'user': user,
-        #     'vehicle': vehicle,
-        #     'start_date': start_date,
-        #     'end_date': end_date,
-        #     'total_amount': total_amount,
-        #     'status': status,
-        # })
 
-       
-# def book_now(req, pid):
-#     if 'user' in req.session:
-#         data = Cab.objects.get(pk=pid)
-#         bookings = Booking.objects.get(confirmation_code=req.session['user'])
 
-#         if req.method == 'POST':
-#             username = req.POST.get('name')
-#             vehicle_id = req.POST.get('vehicle')
-#             start_date = req.POST.get('start_date')
-#             end_date = req.POST.get('end_date')
-
-#             if Booking.objects.filter(bookings=data).exists():
-#                 error_message = "The hall is already booked for this date. Please choose another date."
-#                 return render(req, 'user/book_now.html', {'bookings': data, 'error_message': error_message})
-
-#             bookings = Booking.objects.create(
-#                 user=username,
-#                 vehicle=vehicle_id,
-#                 start_date=start_date,
-#                 end_date=end_date,
-#                 total_amount=400, 
-#                 status='pending',
-                
-#             )
-#             bookings.save()
-
-#         return render(req, 'user/book_now.html', {'bookings': data})
-#     else:
-#         return redirect('shop_login')
 
 
 
