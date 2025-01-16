@@ -8,6 +8,8 @@ import os
 from django.contrib.auth.models import User
 import random
 from datetime import datetime
+# from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 from .models import Booking
 
@@ -89,55 +91,6 @@ def delete_cabs(req,pid):
     data.delete()
     return redirect(shop_home)
 
-# def cart_pro_buy(req,cid):
-#     cart=cart.objects.get(pk=cid)
-#     product=cart.Product
-#     user=cart.user
-#     qty=cart.qty
-#     price=product.offer_price*qty
-#     buy=Buy.objects.create(Product=product,user=user,qty=qty,price=price)
-#     buy.save()
-#     return redirect(bookings)
-
-# def pro_buy(req,pid):
-#     Products=Cab.objects.get(pk=pid)
-#     user=User.objects.get(username=req.session['user'])
-#     qty=1
-#     price=Products.offer_price
-#     buy=Buy.objects.create(Product=Products,user=user,qty=qty,price=price)
-#     buy.save()
-#     return redirect(bookings)
-
-
-# def bookings(req):
-#     user=User.objects.get(username=req.session['user'])
-#     buy=Buy.objects.filter(user=user)[::-1]
-#     return render(req,'user/bookings.html',{'bookings':buy})
-
-
-
-# def book_form(request, pid):
-   
-#     vehicle = Cab.objects.get(id=pid)
-    
-#     if request.method == 'POST':
-      
-#         form = Booking(request.POST)
-#         if form.is_valid():
-#             booking = form.save(commit=False)
-#             booking.user = request.user
-#             booking.vehicle = vehicle
-#             booking.save()
-
-            
-#             return redirect('booking_confirmation', confirmation_code=booking.confirmation_code)
-
-#     else:
-        
-#         form = Booking(vehicle=vehicle)
-
-#     return render(request, 'user/bookingform.html', {'form': form, 'vehicle': vehicle})
-
 
 def generate_otp(length=6):
     otp = ''.join(random.choices('0123456789', k=length))  
@@ -173,112 +126,6 @@ def booking_confirmation(request):
     confirmation_code = generate_otp()  # Generate the confirmation code
     print(f"Generated OTP: {confirmation_code}")  # Debugging line, check in the console
     return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
-
-
-# def book_now(request):
-#     return render(request, 'user/booknow.html')
-
-
-# def pro_buy(req,pid):
-#     product=Product.objects.get(pk=pid)
-#     user=User.objects.get(username=req.session['user'])
-#     qty=1
-#     price=product.offer_price
-#     buy=Buy.objects.create(Product=product,user=user,qty=qty,price=price)
-#     buy.save()
-#     return redirect(bookings)
-
-# def book_now(request, pid):
-#     if request.method == 'POST':
-#         form = BookingForm(request.POST)
-#         if form.is_valid():
-#             user=User.objects.get(username=request.session['user'])
-#             vehicle=vehicle.objects.get(id=pid)
-#             start_date = form.cleaned_data['start_date']
-#             end_date = form.cleaned_data['end_date']
-            
-#             confirmation_code = get_random_string(length=8)
-#             total_amount = 100  
-#             status = "Confirmed"
-#             data=Booking(user=user,vehicle=vehicle,start_date=start_date,end_date=end_date,confirmation_code=confirmation_code,total_amount=total_amount,status=status)
-#             data.save()
-#             context = {
-#                 'confirmation_code': confirmation_code,
-#                 'user': user,
-#                 'vehicle': vehicle,
-#                 'start_date': start_date,
-#                 'end_date': end_date,
-#                 'total_amount': total_amount,
-#                 'status': status
-#             }
-            
-#             return render(request, 'user/booknow.html', context)
-#     else:
-#         form = BookingForm()
-#         data=Booking.objects.create(user=user,vehicle=vehicle,start_date=start_date,end_date=end_date,confirmation_code=confirmation_code,total_amount=total_amount,status=status)
-#         data.save()
-    
-#     return render(request, 'user/booknow.html', {'form': form})
-      
-
-# def book_now(request, pid):
-#     # Fetch the vehicle by 'pid' and handle possible errors
-#     vehicle = get_object_or_404(Cab, id=pid)
-
-#     if request.method == 'POST':
-#         form = BookingForm(request.POST)
-#         if form.is_valid():
-#             user = User.objects.get(username=request.session['user'])  # Ensure the user exists in session
-#             start_date = form.cleaned_data['start_date']
-#             end_date = form.cleaned_data['end_date']
-            
-#             confirmation_code = get_random_string(length=8)
-#             total_amount = 100  # Example static amount, replace with dynamic calculation if needed
-#             status = "Confirmed"
-            
-#             booking = Booking(
-#                 user=user, 
-#                 vehicle=vehicle, 
-#                 start_date=start_date, 
-#                 end_date=end_date, 
-#                 confirmation_code=confirmation_code, 
-#                 total_amount=total_amount, 
-#                 status=status
-#             )
-#             booking.save()
-
-#             # Prepare context to pass to the template
-#             context = {
-#                 'confirmation_code': confirmation_code,
-#                 'user': user,
-#                 'vehicle': vehicle,
-#                 'start_date': start_date,
-#                 'end_date': end_date,
-#                 'total_amount': total_amount,
-#                 'status': status,
-#                 'vehicle_id': vehicle.id,  # Pass the vehicle ID
-#             }
-            
-#             return render(request, 'user/booknow.html', context)
-#     else:
-#         user = User.objects.get(username=request.session['user'])  # Ensure the user exists in session
-#         form = BookingForm()
-
-#         context = {
-#             'form': form,
-#             'vehicle': vehicle,
-#             'cab_id': Cab.id,  # Pass the vehicle ID
-#         }
-#         return render(request, 'user/booknow.html', context)
-
-
-
-
-
-
-
-
-
 
 
 
@@ -340,7 +187,6 @@ def book_now(request, pid=None):
 
 
 
-
 def submit_booknow(request):
     if request.method == 'POST':
         
@@ -387,26 +233,50 @@ def services(req):
 def tariff(req):
     return render(req,'user/tariff.html')
 
+# @login_required
+# def view_bookings(request):
+#     # Check if the method is POST (for creating a booking)
+#     if request.method == 'POST':
+#         form = BookingForm(request.POST)
+        
+#         if form.is_valid():
+#             # Use request.user instead of session data
+#             user = request.user
+            
+#             start_date = form.cleaned_data['start_date']
+#             end_date = form.cleaned_data['end_date']
+#             confirmation_code = get_random_string(length=8)
+#             total_amount = 100  # Assuming a static amount for simplicity
+#             status = "Confirmed"
+
+#             # Create the booking instance
+#             booking = Booking(
+#                 user=user, 
+#                 start_date=start_date, 
+#                 end_date=end_date, 
+#                 confirmation_code=confirmation_code, 
+#                 total_amount=total_amount, 
+#                 status=status
+#             )
+#             booking.save()
+
+#             # Redirect to another page after successful booking
+#             return redirect('shop_home')  # Change 'shop_home' to your actual URL name
+
+#     else:
+#         form = BookingForm()  # Initialize the form for GET requests
+
+#     # Fetch all bookings for the logged-in user
+#     bookings = Booking.objects.filter(user=request.user)
+
+#     # Pass the bookings and form to the template
+#     return render(request, 'admin/view_bookings.html', {
+#         'bookings': bookings,
+       
+#     })
+@staff_member_required  # Ensure only admin users (staff) can access this view
 def view_bookings(request):
-    if request.method == "POST":
-       
-        user = request.POST.get('name')
-        vehicle = request.POST.get('vehicle')
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        total_amount = request.POST.get('total_amount')
-        status = request.POST.get('status')
-        if not all([user, vehicle, start_date, end_date, total_amount, status]):
-            return HttpResponse("Please fill out all the fields.", status=400)
-       
-        confirmation_code = str(random.randint(100000, 999999))
-        confirmation_code.save()
-
-    bookings = Booking.objects.all()
-    return render(request, 'admin/view_bookings.html', {'bookings': bookings})
-
-def bookings(request):
-    # Fetch all bookings or a specific user's bookings
-    user_bookings = Booking.objects.filter(user=request.user)  # Assuming you want to show bookings for the logged-in user
+    # Fetch all bookings in the system
+    bookings = Booking.objects.all()  # All bookings, regardless of user
     
-    return render(request, 'user/bookings.html', {'bookings': user_bookings})
+    return render(request, 'admin/view_bookings.html', {'bookings': bookings})
