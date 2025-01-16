@@ -221,22 +221,87 @@ def booking_confirmation(request):
 #     return render(request, 'user/booknow.html', {'form': form})
       
 
-def book_now(request, pid):
-    # Fetch the vehicle by 'pid' and handle possible errors
-    vehicle = get_object_or_404(Cab, id=pid)
+# def book_now(request, pid):
+#     # Fetch the vehicle by 'pid' and handle possible errors
+#     vehicle = get_object_or_404(Cab, id=pid)
+
+#     if request.method == 'POST':
+#         form = BookingForm(request.POST)
+#         if form.is_valid():
+#             user = User.objects.get(username=request.session['user'])  # Ensure the user exists in session
+#             start_date = form.cleaned_data['start_date']
+#             end_date = form.cleaned_data['end_date']
+            
+#             confirmation_code = get_random_string(length=8)
+#             total_amount = 100  # Example static amount, replace with dynamic calculation if needed
+#             status = "Confirmed"
+            
+#             booking = Booking(
+#                 user=user, 
+#                 vehicle=vehicle, 
+#                 start_date=start_date, 
+#                 end_date=end_date, 
+#                 confirmation_code=confirmation_code, 
+#                 total_amount=total_amount, 
+#                 status=status
+#             )
+#             booking.save()
+
+#             # Prepare context to pass to the template
+#             context = {
+#                 'confirmation_code': confirmation_code,
+#                 'user': user,
+#                 'vehicle': vehicle,
+#                 'start_date': start_date,
+#                 'end_date': end_date,
+#                 'total_amount': total_amount,
+#                 'status': status,
+#                 'vehicle_id': vehicle.id,  # Pass the vehicle ID
+#             }
+            
+#             return render(request, 'user/booknow.html', context)
+#     else:
+#         user = User.objects.get(username=request.session['user'])  # Ensure the user exists in session
+#         form = BookingForm()
+
+#         context = {
+#             'form': form,
+#             'vehicle': vehicle,
+#             'cab_id': Cab.id,  # Pass the vehicle ID
+#         }
+#         return render(request, 'user/booknow.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+def book_now(request, pid=None):
+    if pid is not None:
+       
+        vehicle = get_object_or_404(Cab, id=pid)
+    else:
+        
+        vehicle = None  
 
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
-            user = User.objects.get(username=request.session['user'])  # Ensure the user exists in session
+            user = User.objects.get(username=request.session['user'])  
             start_date = form.cleaned_data['start_date']
             end_date = form.cleaned_data['end_date']
             
             confirmation_code = get_random_string(length=8)
-            total_amount = 100  # Example static amount, replace with dynamic calculation if needed
+            total_amount = 100 
             status = "Confirmed"
             
-            booking = Booking(
+            bookings = Booking.objects.create(
                 user=user, 
                 vehicle=vehicle, 
                 start_date=start_date, 
@@ -245,9 +310,8 @@ def book_now(request, pid):
                 total_amount=total_amount, 
                 status=status
             )
-            booking.save()
+            bookings.save()
 
-            # Prepare context to pass to the template
             context = {
                 'confirmation_code': confirmation_code,
                 'user': user,
@@ -256,20 +320,24 @@ def book_now(request, pid):
                 'end_date': end_date,
                 'total_amount': total_amount,
                 'status': status,
-                'vehicle_id': vehicle.id,  # Pass the vehicle ID
+                'vehicle_id': vehicle.id if vehicle else None,  
             }
-            
+         
+
             return render(request, 'user/booknow.html', context)
+    
     else:
-        user = User.objects.get(username=request.session['user'])  # Ensure the user exists in session
+        user = User.objects.get(username=request.session['user'])  
         form = BookingForm()
 
         context = {
             'form': form,
             'vehicle': vehicle,
-            'cab_id': Cab.id,  # Pass the vehicle ID
+            'cab_id': vehicle.id if vehicle else None,  
         }
+
         return render(request, 'user/booknow.html', context)
+
 
 
 
