@@ -26,7 +26,7 @@ urlpatterns=[
     path('view_cabs/<pid>',views.view_cabs),
     path('tariff/',views.tariff),
     path('vehicles/', views.vehicle_rentals, name='vehicle_rentals'),
-    path(' booking_confirmation',views. booking_confirmation),
+    path('booking_confirmation/', views.booking_confirmation, name='booking_confirmation'),  # Confirmation page
     # path('book_vehicle/<int:pid>/', views.book_form),
     path('book_form/<pid>/',views. book_form),
     path('book_now/<pid>/', views.book_now),  
