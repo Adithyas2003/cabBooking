@@ -12,6 +12,7 @@ from datetime import datetime
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse
 from .models import Booking
+from .models import Vehicle
 
 # Create your views here.
 
@@ -186,6 +187,9 @@ def book_now(request, pid=None):
         return render(request, 'user/booknow.html', context)
 
 
+def vehicle_rentals(request):
+    vehicles = Vehicle.objects.all()  # Fetch all vehicle rental details
+    return render(request, 'user/tariff.html', {'vehicles': vehicles})
 
 def submit_booknow(request):
     if request.method == 'POST':

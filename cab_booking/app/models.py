@@ -28,3 +28,13 @@ class Booking(models.Model):
     def __str__(self):
         return f"Booking for {self.vehicle.vehicle_type} by {self.user.username}"
 
+class Vehicle(models.Model):
+   
+    vehicle_type = models.CharField(max_length=100) 
+    seating_capacity = models.IntegerField()  
+    rate_per_day = models.DecimalField(max_digits=8, decimal_places=2)  
+    allowed_km_per_day = models.IntegerField() 
+    cost_per_extra_km = models.DecimalField(max_digits=8, decimal_places=2)  
+    
+    def __str__(self):
+        return self.vehicle_type

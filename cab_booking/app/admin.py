@@ -4,3 +4,4 @@ from .models import *
 # Register your models here.
 admin.site.register(Cab)
 admin.site.register(Booking)
+admin.site.register(Vehicle)
