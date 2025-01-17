@@ -15,29 +15,27 @@
     <h1>Book Now</h1>
 
     {% if confirmation_code %}
-    <div class="alert alert-success mt-3">
-      <strong>Booking Confirmed!</strong><br />
-      <!-- <p>Cab_ID: {{ Cab_id }}</p> -->
-      Confirmation Code: {{ confirmation_code }}<br />
-      User: {{ user }}<br />
-      Vehicle: {{ vehicle }}<br />
-      Start Date: {{ start_date }}<br />
-      End Date: {{ end_date }}<br />
-      Total Amount: {{ total_amount }}<br />
-      Status: {{ status }}
-    </div>
+      <div class="alert alert-success mt-3">
+        <strong>Booking Confirmed!</strong><br />
+        Confirmation Code: {{ confirmation_code }}<br />
+        User: {{ user }}<br />
+        Vehicle: {{ vehicle }}<br />
+        Start Date: {{ start_date }}<br />
+        End Date: {{ end_date }}<br />
+        Total Amount: {{ total_amount }}<br />
+        Status: {{ status }}
+      </div>
     {% else %}
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Book Now</button>
-  </form>
-  
-      <input type="hidden" name="Cab_id" value="{{ Cab_id }}" />
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <!-- Hidden input field for Cab_id -->
+        <input type="hidden" name="Cab_id" value="{{ Cab_id }}" />
 
-      <!-- <button type="submit" class="btn btn-success mt-3">Book Now</button> -->
-      <!-- <a href="../book_now/" class="btn btn-info">Book Now</a> -->
-   
+        <!-- Submit button with Bootstrap styling -->
+        <button type="submit" class="btn btn-success mt-3">Book Now</button>
+      </form>
     {% endif %}
   </div>
 </body>

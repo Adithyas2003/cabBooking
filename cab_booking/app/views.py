@@ -123,9 +123,12 @@ def book_form(request, pid):
     return render(request, 'user/bookingform.html', {'form': form, 'vehicle': vehicle})
 
 
+
 def booking_confirmation(request):
     confirmation_code = generate_otp()  # Generate the confirmation code
     print(f"Generated OTP: {confirmation_code}")  # Debugging line, check in the console
+    
+    # If you want to render the confirmation page with the OTP
     return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
 
 
@@ -236,6 +239,73 @@ def services(req):
     return render(req,'user/services.html')
 def tariff(req):
     return render(req,'user/tariff.html')
+
+# def view_cabs(req,pid):
+#     if req.method == 'POST':
+#         form = BookingForm(req.POST)
+#         if form.is_valid():
+#             user = User.objects.get(username=req.session['user'])  
+#             start_date = form.cleaned_data['start_date']
+#             end_date = form.cleaned_data['end_date']
+            
+#             confirmation_code = get_random_string(length=8)
+#             total_amount = 100 
+#             status = "Confirmed"
+
+#             bookings = Booking(
+#                 user=user, 
+#                 start_date=start_date, 
+#                 end_date=end_date, 
+#                 confirmation_code=confirmation_code, 
+#                 total_amount=total_amount, 
+#                 status=status
+#             )
+#             bookings.save()
+#             return redirect(book_now)
+#         book=Booking.objects.all()
+#         return render(req,'user/booknow.html',{'book_now':book})
+#     bookings=Cab.objects.get(pk=pid)
+#     return render(req,'user/view_cabs.html',{'Cab':bookings})
+def view_cabs(request,pid):
+    cabs = Cab.objects.all()  # Fetch all available cabs
+    return render(request, 'user/view_cabs.html', {'cabs': cabs})
+
+
+
+def book_now(request, cab_id):
+    cab = Cab.objects.get(id=cab_id)  # Get the selected cab
+    confirmation_code = None
+
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            # Save the booking details
+            booking = form.save(commit=False)
+            booking.user = request.user  # Associate the booking with the logged-in user
+            booking.cab = cab  # Associate the booking with the selected cab
+            booking.confirmation_code = "CONF12345"  # You can replace this with a dynamic code
+            booking.save()
+
+            # Render the confirmation page
+            return render(request, 'book_now.html', {
+                'confirmation_code': booking.confirmation_code,
+                'user': request.user,
+                'vehicle': cab,
+                'start_date': booking.start_date,
+                'end_date': booking.end_date,
+                'total_amount': booking.total_amount,
+                'status': booking.status,
+                'Cab_id': cab.id,
+            })
+    else:
+        form = BookingForm()
+
+    # Render the form page for booking
+    return render(request, 'book_now.html', {
+        'form': form,
+        'Cab_id': cab.id,
+    })
+
 
 # @login_required
 # def view_bookings(request):

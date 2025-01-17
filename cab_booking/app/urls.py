@@ -23,6 +23,7 @@ urlpatterns=[
     path('contact/',views.contact),
     path('about/',views.about),
     path('services/',views.services),
+    path('view_cabs/<pid>',views.view_cabs),
     path('tariff/',views.tariff),
     path('vehicles/', views.vehicle_rentals, name='vehicle_rentals'),
     path(' booking_confirmation',views. booking_confirmation),
