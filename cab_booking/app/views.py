@@ -5,6 +5,7 @@ from .models import *
 from .forms import *
 from django.utils.crypto import get_random_string
 import os
+import string
 from django.contrib.auth.models import User
 import random
 from datetime import datetime
@@ -123,17 +124,19 @@ def book_form(request, pid):
     return render(request, 'user/bookingform.html', {'form': form, 'vehicle': vehicle})
 
 
-# def booking_confirmation(request):
-#     # Get the confirmation code from the query string in the URL
-#     confirmation_code = request.GET.get('confirmation_code')
-
-#     # Render the confirmation page with the confirmation code
-#     return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
 
 
-def generate_confirmation_code(length=6):
-    """Generate a random numeric confirmation code of a given length."""
-    return ''.join(random.choices('0123456789', k=length))  # Generates a numeric code (e.g., 123456)
+def generate_confirmation_code(length=8):
+    """Generate a random alphanumeric confirmation code of a given length."""
+    # Create a pool of uppercase and lowercase letters + digits
+    characters = string.ascii_letters + string.digits
+    # Randomly choose characters from the pool and join them into a string
+    return ''.join(random.choices(characters, k=length))
+
+
+
+# def confirmation_code = generate_confirmation_code(length=8)
+#     print(confirmation_code)  
 def book_now(request, pid=None):
     if pid is not None:
         vehicle = get_object_or_404(Cab, id=pid)  # Get the vehicle based on the id (pid)
@@ -143,19 +146,19 @@ def book_now(request, pid=None):
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
-            user = request.user  # Get the logged-in user (using Django's auth system)
+            user = request.user  # Get the logged-in user
             start_date = form.cleaned_data['start_date']
             end_date = form.cleaned_data['end_date']
             
-            # Generate a random confirmation code (8 characters long)
-            confirmation_code = get_random_string(length=8)  # Generate a random string
+            # Generate a random confirmation code (6 digits long)
+            confirmation_code = generate_confirmation_code(length=6)
 
-            # Calculate the total_amount dynamically if needed, for now, assume 100
-            total_amount = 100  # For simplicity, using a static amount here
-            status = "Confirmed"  # Booking status can be dynamically set
+            # Calculate the total_amount dynamically
+            total_amount = 100  # Assuming 100 for simplicity
+            status = "Confirmed"
 
-            # Create and save the booking
-            bookings = Booking.objects.create(
+            # Create a new Booking instance (don't save it yet)
+            booking = Booking(
                 user=user,
                 vehicle=vehicle,
                 start_date=start_date,
@@ -164,7 +167,9 @@ def book_now(request, pid=None):
                 total_amount=total_amount,
                 status=status
             )
-            bookings.save()  # Save the booking to the database
+            
+            # Save the booking to the database
+            booking.save()
 
             # Prepare the context for rendering the confirmation page
             context = {
@@ -178,21 +183,8 @@ def book_now(request, pid=None):
                 'vehicle_id': vehicle.id if vehicle else None,
             }
 
-            # Render the confirmation page with the booking details
+            # Render the confirmation page
             return render(request, 'user/booknow.html', context)
-    
-    else:
-        form = BookingForm()
-
-        context = {
-            'form': form,
-            'vehicle': vehicle,
-            'cab_id': vehicle.id if vehicle else None,
-        }
-
-        # Render the booking form if the method is GET
-        return render(request, 'user/booknow.html', context)
-
 
 def vehicle_rentals(request):
     vehicles = Vehicle.objects.all()  # Fetch all vehicle rental details
@@ -203,25 +195,32 @@ def submit_booknow(request):
         user_name = request.POST['user_name']
         start_date = request.POST['start_date']
         end_date = request.POST['end_date']
-        vehicle = request.POST['vehicle']
+        vehicle_id = request.POST['vehicle']  # This should be the ID of the vehicle
         total_amount = request.POST['total_amount']
 
+        # Fetch the vehicle object based on the vehicle_id from the form
+        vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+
         # Generate the confirmation code
-        confirmation_code = generate_confirmation_code()  # Call the function to generate the code
+        confirmation_code = generate_confirmation_code()  # Ensure this is the string-based code
 
         # Save the booking in the database
-        booking = Booking(
-            user_name=user_name,
+        bookings = Booking(
+            user=user,  # Ensure this matches your model field
             start_date=start_date,
             end_date=end_date,
-            vehicle=vehicle,
+            vehicle=vehicle,  # Assign the actual Vehicle object
             total_amount=total_amount,
             confirmation_code=confirmation_code,  # Store confirmation code in the database
         )
-        booking.save()
+        bookings.save()  # Save to the database
 
         # Redirect to the confirmation page with the confirmation code in the URL
         return redirect(f"/booking_confirmation/?confirmation_code={confirmation_code}")
+    else:
+        # If the method is not POST, render a form (optional, depending on your logic)
+        return render(request, 'user/booknow.html')
+
 def user_home(req):
     if 'user' in req.session:
         data=Cab.objects.all()
@@ -329,11 +328,15 @@ def view_cabs(request,pid):
 #         'Cab_id': cab.id,
 #     })
 def booking_confirmation(request):
-    confirmation_code = generate_otp()  # Generate the confirmation code
-    print(f"Generated OTP: {confirmation_code}")  # Debugging line, check in the console
+    # Generate the confirmation code (OTP)
+    confirmation_code = generate_confirmation_code(length=8)  # Generate an 8-character alphanumeric confirmation code
     
-    # If you want to render the confirmation page with the OTP
+    print(f"Generated Confirmation Code: {confirmation_code}")  # Debugging line, check in the console
+    
+    # Render the confirmation page with the OTP (confirmation code)
     return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
+
+
 # @login_required
 # def view_bookings(request):
 #     # Check if the method is POST (for creating a booking)
