@@ -138,11 +138,13 @@ def generate_confirmation_code(length=8):
 # def confirmation_code = generate_confirmation_code(length=8)
 #     print(confirmation_code)  
 def book_now(request, pid=None):
+    # Retrieve the vehicle if pid is provided, otherwise set vehicle to None
     if pid is not None:
         vehicle = get_object_or_404(Cab, id=pid)  # Get the vehicle based on the id (pid)
     else:
         vehicle = None
 
+    # Handle POST request when the form is submitted
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
@@ -153,11 +155,13 @@ def book_now(request, pid=None):
             # Generate a random confirmation code (6 digits long)
             confirmation_code = generate_confirmation_code(length=6)
 
-            # Calculate the total_amount dynamically
-            total_amount = 100  # Assuming 100 for simplicity
+            # Calculate the total amount dynamically (using your business logic here)
+            total_amount = 100  # For simplicity, we're assuming 100 as the total amount
+
+            # Set the booking status, can be "Confirmed" or any status you want
             status = "Confirmed"
 
-            # Create a new Booking instance (don't save it yet)
+            # Create a new Booking instance
             booking = Booking(
                 user=user,
                 vehicle=vehicle,
@@ -183,8 +187,15 @@ def book_now(request, pid=None):
                 'vehicle_id': vehicle.id if vehicle else None,
             }
 
-            # Render the confirmation page
+            # Render the confirmation page with the provided context
             return render(request, 'user/booknow.html', context)
+
+    # If the request is GET (initial form load), create an empty form
+    else:
+        form = BookingForm()
+
+    # In case the form is not valid or the request is GET, pass an empty form to the template
+    return render(request, 'user/booknow.html', {'form': form})
 
 def vehicle_rentals(request):
     vehicles = Vehicle.objects.all()  # Fetch all vehicle rental details

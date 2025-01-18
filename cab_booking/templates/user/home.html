@@ -11,613 +11,851 @@
 </head>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-}
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+    }
 
-/* Header */
+    /* Header */
+   
 header {
-    background:white;
+    background-color: #333;
     color: #fff;
     padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
-header .main-header {
+.main-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: space-between; /* Space between logo and navigation */
 }
-
 header .main-header img {
     width: 100px;
     height: 80px;
 }
 
-header h1 {
-    display: inline-block;
-    margin-left: 10px;
-    font-size: 1.8rem;
-    color: #333;
-    font-style: italic;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the image and the text */
 }
 
-/* Navigation */
-nav ul {
+.logo img {
+    width: 80px; /* Adjust the size of the logo */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Optional: Rounded corners */
+}
+
+.logo h1 {
+    font-size: 1.8rem; /* Adjust font size */
+    font-weight: bold; /* Bold text for emphasis */
+    color:white; /* Text color */
+    font-family: 'Arial', sans-serif; /* Font style */
+    text-transform: uppercase; /* Uppercase text */
+    letter-spacing: 2px; /* Space between letters */
+    margin: 0; /* Remove default margin */
+}
+
+/* Navigation Links */
+ul {
     display: flex;
-    list-style: none;
-    padding: 0;
+    list-style-type: none;
     margin: 0;
+    padding: 0;
 }
 
-nav ul li {
-    margin-left: 20px;
+ul li {
+    margin: 0 10px;
 }
 
-nav ul li a {
-    color:black;
+ul li a {
+    color: #fff;
     text-decoration: none;
     font-size: 1rem;
-    padding: 5px 10px;
+    transition: color 0.3s ease;
 }
 
-nav ul li a:hover {
-    background-color: #444;
-    border-radius: 4px;
+ul li a:hover {
+    color: #4caf50;
 }
 
-/* Hero Section */
-/* Hero Section */
-.hero {
-    background: url('{% static "/images/istockphoto-519870714-612x612.jpg" %}') no-repeat center center/cover;
-    color: #fff;
-    padding: 50px 20px;
-    text-align: center;
-    width: 100%;
-    height: 700px;
-    position: relative; 
-}
-
-/* Hero Content */
-.hero-content {
-    position: absolute;
-    bottom: 20px; 
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    width: 100%;
-}
-
-/* Button Styling */
-.hero-content .btn {
-    display: inline-block;
-    background: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    text-decoration: none;
-    margin: 10px 5px; 
-    border-radius: 4px;
-    font-size: 1rem;
-}
-
-.hero-content .btn.whatsapp {
-    background: #25d366;
-}
-
-.hero-content .btn.telegram {
-    background: #0088cc; 
-}
-
-/* Hover Effects */
-.hero-content .btn:hover {
-    opacity: 0.8;
-}
-
-/* Features Section */
-.features {
-    padding: 20px;
-    text-align: center;
-}
-
-.features h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-.feature-grid {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
-.feature-item {
-    width: 200px;
-    margin: 20px;
-    text-align: center;
-}
-
-.feature-item img {
-    width: 50px;
-    margin-bottom: 10px;
-}
-.sect {
-    width: 100%;
-    padding: 40px 0;
-    background-color: #f7f7f7;
-}
-
-.sect1 {
-    display: flex;
-    align-items: center;  
-    justify-content: center; 
-    gap: 30px;  
-    flex-wrap: wrap;  
-    max-width: 1200px;
-    margin: 0 auto;  
-    padding: 0 20px;
-}
-
-/* Image Styling */
-.image-container {
-    flex: 1;
-    max-width: 45%;  
-    min-width: 250px;
-    overflow: hidden;
-    border-radius: 8px; 
-}
-
-.image-container img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;  
-    border-radius: 6px; 
-}
-
-/* Content Styling */
-.content-container {
-    flex: 2;
-    text-align: left;  
-    max-width: 55%; 
-    padding: 20px;
-}
-
-h1 {
-    font-size: 2.5rem; 
-    text-align: center;  
-    color: #333;
-    margin-bottom: 20px;
-    font-family: 'Arial', sans-serif;
-}
-
-.subtitle {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #444;
-    margin-top: 20px;
-    text-transform: uppercase; 
-}
-
-p {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #666;
-    margin-top: 10px;
-    font-family: 'Arial', sans-serif;
-}
-/* General styles for sect2 */
-.sect2 {
-    display: flex;
-    flex-wrap: wrap; 
-    justify-content: space-between;  
-    gap: 20px;  
-    padding: 40px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: white; 
-}
-
-.sect2a {
-    flex: 1 1 100%;  
-    text-align: center;
-}
-
-.sect2a h1 {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.sect2a p {
-    font-size: 1.1rem;
-    color: #666;
-    line-height: 1.6;
-    margin: 0 auto;
-    max-width: 800px;
-}
-
-.sect2b, .sect2c, .sect2d {
-    flex: 1 1 30%;  
-    padding: 20px;
-    background-color: #fff;  
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  
-    text-align: center;
-    transition: transform 0.3s ease;  
-}
-
-.sect2b img, .sect2c img, .sect2d img {
-    width: 80px;
-    height: auto;
-    margin-top: 20px;
-}
-
-.sect2b h6, .sect2c h6, .sect2d h6 {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.sect2b p, .sect2c p, .sect2d p {
-    font-size: 1rem;
-    color: #666;
-    line-height: 1.6;
-    margin-top: 10px;
-}
-
-/* Hover effect for each section */
-.sect2b:hover, .sect2c:hover, .sect2d:hover {
-    transform: translateY(-10px); 
-}
-/* Custom styles for better spacing and design */
-.qn {
-    margin: 40px auto;
-    max-width: 800px;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-}
-
-
-
-.accordion-button {
-    background-color:white;
-    color:black;
-    border: none;
-    font-size: 1.1rem;
-    padding: 15px;
-    text-align: left;
+/* Hamburger Icon */
+.menu-icon {
+    display: none; /* Initially hidden, visible on small screens */
+    flex-direction: column;
     cursor: pointer;
+    gap: 5px;
 }
 
-.accordion-button:not(.collapsed) {
-    background-color:white;
+.menu-icon .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 2px;
 }
 
-.accordion-body {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #555;
-    padding: 15px;
-    background-color: #f1f1f1;
+/* Menu Toggle Checkbox */
+.menu-toggle {
+    display: none; /* Hidden checkbox for toggling menu */
 }
 
-.accordion-item {
-    margin-bottom: 10px;
+/* Mobile Menu */
+.menu-toggle:checked~ul {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px; /* Adjust based on header height */
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    padding: 10px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.accordion-header {
-    margin-bottom: 10px;
+.menu-toggle:checked~ul li {
+    margin: 10px 0;
+    text-align: center;
 }
 
-.footer {
-      background-color: black;
-      color: white;
-      padding: 20px 0;
-      text-align: center;
-}
-.footer .container {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      max-width: 1200px;
-      margin: 0 auto;
-}
-.footer .column {
-      flex: 1;
-      min-width: 200px;
-      margin: 10px;
-}
-.footer .column h3 {
-      margin-bottom: 10px;
-      text-transform: uppercase;
-}
-.footer .column a {
-      color: white;
-      text-decoration: none;
-      display: block;
-      margin: 5px 0;
-      font-size: 14px;
-}
-.footer .column a:hover {
-      text-decoration: underline;
-}
-.footer .bottom-text {
-      margin-top: 20px;
-      font-size: 14px;
-}
-.footer .button {
-      background-color: #2ecc71;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 10px;
-      display: inline-block;
-}
-.footer .button:hover {
-      background-color: #27ae60;
-}
-.footer .social-icons {
-      display: flex;
-      justify-content: center;
-      margin-top: 10px;
-}
-.footer .social-icons a {
-      margin: 0 10px;
-}
-.footer .social-icons img {
-      width: 20px;
-      height: 20px;
+/* Responsive Design */
+@media (max-width: 768px) {
+    ul {
+        display: none; /* Hide menu by default on smaller screens */
+    }
+
+    .menu-icon {
+        display: flex; /* Show hamburger menu on smaller screens */
+    }
 }
 
+
+
+    /* Hero Section */
+    .hero {
+        background: url('{% static "/images/istockphoto-519870714-612x612.jpg" %}') no-repeat center center/cover;
+        color: #fff;
+        padding: 50px 20px;
+        text-align: center;
+        width: 100%;
+        height: 700px;
+        position: relative;
+    }
+
+    /* Hero Content */
+    .hero-content {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        width: 100%;
+    }
+
+    /* Button Styling */
+    .hero-content .btn {
+        display: inline-block;
+        background: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        text-decoration: none;
+        margin: 10px 5px;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .hero-content .btn.whatsapp {
+        background: #25d366;
+    }
+
+    .hero-content .btn.telegram {
+        background: #0088cc;
+    }
+
+    /* Hover Effects */
+    .hero-content .btn:hover {
+        opacity: 0.8;
+    }
+
+    /* Features Section */
+    .features {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .features h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .feature-grid {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .feature-item {
+        width: 200px;
+        margin: 20px;
+        text-align: center;
+    }
+
+    .feature-item img {
+        width: 50px;
+        margin-bottom: 10px;
+    }
+
+    /* Section Styles */
+    .sect {
+        width: 100%;
+        padding: 40px 0;
+        background-color: #f7f7f7;
+    }
+
+    .sect1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* Image Styling */
+    .image-container {
+        flex: 1;
+        max-width: 45%;
+        min-width: 250px;
+        overflow: hidden;
+        border-radius: 8px;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 6px;
+    }
+
+    /* Content Styling */
+    .content-container {
+        flex: 2;
+        text-align: left;
+        max-width: 55%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .subtitle {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #444;
+        margin-top: 20px;
+        text-transform: uppercase;
+    }
+
+    p {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #666;
+        margin-top: 10px;
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* General styles for sect2 */
+    .sect2 {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 40px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: white;
+    }
+
+    .sect2a {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .sect2a h1 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .sect2a p {
+        font-size: 1.1rem;
+        color: #666;
+        line-height: 1.6;
+        margin: 0 auto;
+        max-width: 800px;
+    }
+
+    .sect2b,
+    .sect2c,
+    .sect2d {
+        flex: 1 1 30%;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .sect2b img,
+    .sect2c img,
+    .sect2d img {
+        width: 80px;
+        height: auto;
+        margin-top: 20px;
+    }
+
+    .sect2b h6,
+    .sect2c h6,
+    .sect2d h6 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .sect2b p,
+    .sect2c p,
+    .sect2d p {
+        font-size: 1rem;
+        color: #666;
+        line-height: 1.6;
+        margin-top: 10px;
+    }
+
+    /* Hover effect for each section */
+    .sect2b:hover,
+    .sect2c:hover,
+    .sect2d:hover {
+        transform: translateY(-10px);
+    }
+
+    /* Custom styles for better spacing and design */
+    .qn {
+        margin: 40px auto;
+        max-width: 800px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+    }
+
+
+
+    .accordion-button {
+        background-color: white;
+        color: black;
+        border: none;
+        font-size: 1.1rem;
+        padding: 15px;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: white;
+    }
+
+    .accordion-body {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #555;
+        padding: 15px;
+        background-color: #f1f1f1;
+    }
+
+    .accordion-item {
+        margin-bottom: 10px;
+    }
+
+    .accordion-header {
+        margin-bottom: 10px;
+    }
+
+    .footer {
+        background-color: black;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+    }
+
+    .footer .container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .footer .column {
+        flex: 1;
+        min-width: 200px;
+        margin: 10px;
+    }
+
+    .footer .column h3 {
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .footer .column a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        margin: 5px 0;
+        font-size: 14px;
+    }
+
+    .footer .column a:hover {
+        text-decoration: underline;
+    }
+
+    .footer .bottom-text {
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    .footer .button {
+        background-color: #2ecc71;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        display: inline-block;
+    }
+
+    .footer .button:hover {
+        background-color: #27ae60;
+    }
+
+    .footer .social-icons {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .footer .social-icons a {
+        margin: 0 10px;
+    }
+
+    .footer .social-icons img {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .main-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .hero {
+            height: 500px;
+        }
+
+        .hero-content {
+            bottom: 10px;
+        }
+
+        .feature-grid {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .feature-item {
+            width: 80%;
+            margin-bottom: 20px;
+        }
+
+        .image-container {
+            max-width: 100%;
+        }
+
+        .content-container {
+            max-width: 100%;
+        }
+
+        .sect2b,
+        .sect2c,
+        .sect2d {
+            flex: 1 1 100%;
+            margin-bottom: 20px;
+        }
+
+        .footer .container {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero {
+            height: 400px;
+        }
+
+        .hero-content .btn {
+            font-size: 0.9rem;
+            padding: 8px 16px;
+        }
+
+        .sect {
+            padding: 20px;
+        }
+
+        .features h2 {
+            font-size: 1.8rem;
+        }
+
+        .footer .container {
+            flex-direction: column;
+        }
+
+        .footer .column {
+            margin-bottom: 20px;
+        }
+
+        .footer .social-icons {
+            flex-direction: column;
+        }
+    }
+
+    @media (max-width: 480px) {
+        header h1 {
+            font-size: 1.5rem;
+        }
+
+        nav ul li {
+            margin-left: 10px;
+        }
+
+        .hero {
+            height: 300px;
+        }
+
+        .hero-content .btn {
+            font-size: 0.8rem;
+            padding: 8px 12px;
+        }
+
+        .sect1,
+        .sect2 {
+            padding: 10px;
+        }
+
+        .footer .social-icons a {
+            margin: 5px 0;
+        }
+
+        .footer .bottom-text {
+            font-size: 12px;
+        }
+    }
 </style>
 
 <body>
 
-<header>
-    <div class="main-header">
-        <div class="logo">
-            <img src="{% static '/images/Untitled design.png' %}" alt="logo">
-            <h1>TRAVEL HOPPER</h1>
-        </div>
+        <header>
+            <div class="main-header">
+                <div class="logo">
+                    <img src="{% static '/images/Untitled design.png' %}" alt="logo">
+                    <h1>TRAVEL HOPPER</h1>
+                </div>
+                
         
-        <nav>
-            <ul>
-                <li><a href="">Home</a></li>
-                <li><a href="about">About Us</a></li>
-                <li><a href="services">Services</a></li>
-                <li><a href="tariff">Tariff</a></li>
-                <li><a href="contact">Contact</a></li>
-                <li><a href="logout">logout</a></li>
+                <!-- Hamburger Icon -->
+                <label class="menu-icon" for="menu-toggle">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </label>
+        
+                <!-- Menu Toggle Checkbox -->
+                <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        
+                <!-- Navigation Links -->
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="../about">About Us</a></li>
+                    <li><a href="../services">Services</a></li>
+                    <!-- <li><a href="#tariff">Tariff</a></li> -->
+                    <li><a href="../contact">Contact</a></li>
+                    <li><a href="../logout">Logout</a></li>
+                </ul>
+            </div>
+        </header>
+        
+    <!-- Hero Section -->
+    <section class="hero">
 
-            </ul>
-        </nav>
-    </div>
-</header>
-
-<!-- Hero Section -->
-<section class="hero">
-   
-    <div class="hero-content">
-        <h1>Booking your Cab on Time</h1>
-        <a href="tel:9562826662" class="btn">Call us: 9562826662</a>
-        <a href="https://wa.me/9562826662" class="btn whatsapp">Whatsapp: +91 9562826662</a>
-    </div>
-</section>
-<div class="sect">
-    <div class="sect1">
-        <div class="image-container">
-            <img src="{% static '/images/pexels-jeshoots-7405.jpg' %}" alt="sectimg">
+        <div class="hero-content">
+            <h1>Booking your Cab on Time</h1>
+            <a href="tel:9562826662" class="btn">Call us: 9562826662</a>
+            <a href="https://wa.me/9562826662" class="btn whatsapp">Whatsapp: +91 9562826662</a>
         </div>
-        <div class="content-container">
-            <h1>We Are Trusted Name in Car Renting Services</h1>
-            <h5 class="subtitle">For Riders</h5>
-            <p>We constantly experiment to come up with industry-first features for our riders that eventually become a norm.</p>
-            <h5 class="subtitle">For Drivers</h5>
-            <p>Our drivers get real-time stats to help optimize their rides better and earn more, straight from the app.</p>
-        </div>
-    </div>
-</div>
-
-<div class="sect2">
-    <div class="sect2a">
-        <h1>WHY CHOOSE CABS ?</h1>
-        <p> We are a pioneer in this industry with immense knowledge of Kerala tourism from over a decade.
-         We have a wide variety of taxi services from Kerala to all over south India to cater to your needs. We are specialized taxi service provider in  Kerala</p>
-    </div>
-    <div class="sect2b">
-        <h6>TRANSPARENT PRICING</h6>
-        <p>Best and affordable rates , no extra hidden charges .</p>
-        <img src="{% static '/images/money-2.png' %}" alt="sectimg">
-
-    </div>
-    <div class="sect2c">
-        <h6>EXPERIENCED DRIVERS</h6>
-        <p>Professional and well-mannered with multilingual skills</p>
-        <img src="{% static '/images/driver.png' %}" alt="sectimg">
-
-    </div>
-    <div class="sect2d">
-        <h6>QUALITY & SAFETY</h6>
-        <p>Modern fleet of cabs with round the clock customer support.</p>
-        <img src="{% static '/images/safety.png' %}" alt="sectimg">
-
-    </div>
-
-</div>
-
-
-<div class="container" style="max-width: 1200px;">
-    <div class="row">
-        {% for cabs in Cab %}
-        <div class="col-lg-4 mb-4">
-            <a href="view_cabs/{{ cabs.pk }}">
-                <div class="card">
-                    <img class="card-img-top" src="{{ cabs.img.url }}" alt="Card image" style="width: 100%; height: auto; object-fit: cover;">
-                    <div class="card-body">
-                        <h4 class="card-title">{{ cabs.number_plate }}</h4>
-                        <p class="card-text">{{ cabs.model }}</p>
-                        <h5 class="card-title">{{ cabs.driver_name }}</h5>
-                        <p class="card-text">{{ cabs.avilable }}</p>
-                        <p class="card-text text-muted" style="text-decoration: line-through;">Price: ${{ cabs.price }}</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-
-
-<div class="qn">
-    <h1>FREQUENTLY ASKED QUESTIONS</h1>
-    <div class="qns">
-        <!-- Question 1 -->
-        <div class="accordion" id="faqAccordion">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        What services does Travelhopper offer?
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body">
-                        Travelhopper offers a range of taxi services, including airport transfers, city tours, and inter-city travel within Kerala and beyond.
-                    </div>
-                </div>
+    </section>
+    <div class="sect">
+        <div class="sect1">
+            <div class="image-container">
+                <img src="{% static '/images/pexels-jeshoots-7405.jpg' %}" alt="sectimg">
             </div>
-
-            <!-- Question 2 -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        How are your rates determined?
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body">
-                        Our rates are determined based on distance, type of vehicle, and duration of the journey. Additional fees may apply for tolls or extra services.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Question 3 -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        How can I book a taxi with Travelhopper?
-                    </button>
-                </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body">
-                        You can book a taxi through our website, mobile app, or by calling our customer service team directly.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Question 4 -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFour">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                        Which airports in Kerala do you service?
-                    </button>
-                </h2>
-                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body">
-                        We service all major airports in Kerala, including Trivandrum, Cochin, and Calicut International Airports.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Question 5 -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingFive">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                        Can I book a taxi upon arrival at the airport?
-                    </button>
-                </h2>
-                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body">
-                        Yes, you can book a taxi directly at the airport. Our representatives will be available at the airport to assist you.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Question 6 -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSix">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                        What destinations can I travel to from the airport?
-                    </button>
-                </h2>
-                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body">
-                        You can travel to any destination in Kerala and South India, including popular spots like Munnar, Cochin, Thekkady, and more.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Question 7 -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingSeven">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
-                        Can I book a taxi upon arrival at the airport?
-                    </button>
-                </h2>
-                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body">
-                        Yes, you can book a taxi directly at the airport upon arrival.
-                    </div>
-                </div>
+            <div class="content-container">
+                <h1>We Are Trusted Name in Car Renting Services</h1>
+                <h5 class="subtitle">For Riders</h5>
+                <p>We constantly experiment to come up with industry-first features for our riders that eventually
+                    become a norm.</p>
+                <h5 class="subtitle">For Drivers</h5>
+                <p>Our drivers get real-time stats to help optimize their rides better and earn more, straight from the
+                    app.</p>
             </div>
         </div>
     </div>
-</div>
 
-
-  <footer class="footer">
-    <div class="container">
-      <div class="column">
-        <h3>Company</h3>
-        <a href="about">About Us</a>
-        <a href="#">Media Coverage</a>
-        <a href="#">Careers</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms & Conditions</a>
-        <a href="#">Refunds</a>
-      </div>
-      <div class="column">
-        <h3>Services</h3>
-        <a href="#">Local Car Rentals</a>
-        <a href="#">Outstation Taxi</a>
-        <a href="#">One-way Cabs</a>
-        <a href="#">Corporate Car Rental</a>
-        <a href="#">Airport Taxi</a>
-      </div>
-      <div class="column">
-        <h3>Get In Touch</h3>
-        <a href="contact">Contact Us</a>
-        <a href="#">Sitemap</a>
-        <a href="#">XML Sitemap</a>
-        <div class="social-icons">
-          <a href="#"><img src="icon-facebook.png" alt="Facebook"></a>
-          <a href="#"><img src="icon-twitter.png" alt="Twitter"></a>
-          <a href="#"><img src="icon-instagram.png" alt="Instagram"></a>
-          <a href="#"><img src="icon-youtube.png" alt="YouTube"></a>
+    <div class="sect2">
+        <div class="sect2a">
+            <h1>WHY CHOOSE CABS ?</h1>
+            <p> We are a pioneer in this industry with immense knowledge of Kerala tourism from over a decade.
+                We have a wide variety of taxi services from Kerala to all over south India to cater to your needs. We
+                are specialized taxi service provider in Kerala</p>
         </div>
-      </div>
+        <div class="sect2b">
+            <h6>TRANSPARENT PRICING</h6>
+            <p>Best and affordable rates , no extra hidden charges .</p>
+            <img src="{% static '/images/money-2.png' %}" alt="sectimg">
+
+        </div>
+        <div class="sect2c">
+            <h6>EXPERIENCED DRIVERS</h6>
+            <p>Professional and well-mannered with multilingual skills</p>
+            <img src="{% static '/images/driver.png' %}" alt="sectimg">
+
+        </div>
+        <div class="sect2d">
+            <h6>QUALITY & SAFETY</h6>
+            <p>Modern fleet of cabs with round the clock customer support.</p>
+            <img src="{% static '/images/safety.png' %}" alt="sectimg">
+
+        </div>
+
     </div>
-    <div class="bottom-text">
-      Savaari's Travel Magazine for 2025 - India Unmapped
-      <a href="#" class="button">Get Free Copy!</a>
+
+
+    <div class="container" style="max-width: 1200px;">
+        <div class="row">
+            {% for cabs in Cab %}
+            <div class="col-lg-4 mb-4">
+                <a href="view_cabs/{{ cabs.pk }}">
+                    <div class="card">
+                        <img class="card-img-top" src="{{ cabs.img.url }}" alt="Card image"
+                            style="width: 100%; height: auto; object-fit: cover;">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ cabs.number_plate }}</h4>
+                            <p class="card-text">{{ cabs.model }}</p>
+                            <h5 class="card-title">{{ cabs.driver_name }}</h5>
+                            <p class="card-text">{{ cabs.avilable }}</p>
+                            <p class="card-text text-muted" style="text-decoration: line-through;">Price: ${{ cabs.price
+                                }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-  </footer>
+
+
+    <div class="qn">
+        <h1>FREQUENTLY ASKED QUESTIONS</h1>
+        <div class="qns">
+            <!-- Question 1 -->
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            What services does Travelhopper offer?
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Travelhopper offers a range of taxi services, including airport transfers, city tours, and
+                            inter-city travel within Kerala and beyond.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            How are your rates determined?
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Our rates are determined based on distance, type of vehicle, and duration of the journey.
+                            Additional fees may apply for tolls or extra services.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            How can I book a taxi with Travelhopper?
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            You can book a taxi through our website, mobile app, or by calling our customer service team
+                            directly.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Which airports in Kerala do you service?
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            We service all major airports in Kerala, including Trivandrum, Cochin, and Calicut
+                            International Airports.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFive">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Can I book a taxi upon arrival at the airport?
+                        </button>
+                    </h2>
+                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, you can book a taxi directly at the airport. Our representatives will be available at
+                            the airport to assist you.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingSix">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                            What destinations can I travel to from the airport?
+                        </button>
+                    </h2>
+                    <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            You can travel to any destination in Kerala and South India, including popular spots like
+                            Munnar, Cochin, Thekkady, and more.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingSeven">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                            Can I book a taxi upon arrival at the airport?
+                        </button>
+                    </h2>
+                    <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, you can book a taxi directly at the airport upon arrival.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="footer">
+        <div class="container">
+            <div class="column">
+                <h3>Company</h3>
+                <a href="about">About Us</a>
+                <a href="#">Media Coverage</a>
+                <a href="#">Careers</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Refunds</a>
+            </div>
+            <div class="column">
+                <h3>Services</h3>
+                <a href="#">Local Car Rentals</a>
+                <a href="#">Outstation Taxi</a>
+                <a href="#">One-way Cabs</a>
+                <a href="#">Corporate Car Rental</a>
+                <a href="#">Airport Taxi</a>
+            </div>
+            <div class="column">
+                <h3>Get In Touch</h3>
+                <a href="contact">Contact Us</a>
+                <a href="#">Sitemap</a>
+                <a href="#">XML Sitemap</a>
+                <div class="social-icons">
+                    <a href="#"><img src="icon-facebook.png" alt="Facebook"></a>
+                    <a href="#"><img src="icon-twitter.png" alt="Twitter"></a>
+                    <a href="#"><img src="icon-instagram.png" alt="Instagram"></a>
+                    <a href="#"><img src="icon-youtube.png" alt="YouTube"></a>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-text">
+            Savaari's Travel Magazine for 2025 - India Unmapped
+            <a href="#" class="button">Get Free Copy!</a>
+        </div>
+    </footer>
 </body>
-</html>
+<script>
+    // Toggle the navbar visibility when hamburger icon is clicked
+    document.getElementById("hamburger-icon").addEventListener("click", function () {
+        document.querySelector(".navbar").classList.toggle("active");
+    });
+</script>
 
-
-</body>
 </html>
