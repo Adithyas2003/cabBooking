@@ -135,6 +135,8 @@ def generate_confirmation_code(length=8):
     characters = string.ascii_letters + string.digits
     # Randomly choose characters from the pool and join them into a string
     return ''.join(random.choices(characters, k=length))
+
+
 def book_now(request, pid=None):
     # Fetch the vehicle if pid is provided
     vehicle = get_object_or_404(Cab, id=pid) if pid else None
@@ -149,7 +151,11 @@ def book_now(request, pid=None):
             name = form.cleaned_data['name']
             address = form.cleaned_data['address']
             phone_number = form.cleaned_data['phone_number']
-
+            total_amount = form.cleaned_data['total_amount']
+            status = form.cleaned_data['status']
+            # Generate or use a confirmation code (if not included in the form)
+            confirmation_code = form.cleaned_data.get('confirmation_code', None) or "CONFIRM-" + str(Booking.objects.count() + 1)
+            
             # Create a Booking instance and save it to the database
             booking = Booking.objects.create(
                 user=user,
@@ -158,23 +164,29 @@ def book_now(request, pid=None):
                 end_date=end_date,
                 name=name,
                 address=address,
-                phone_number=phone_number
+                phone_number=phone_number,
+                total_amount=total_amount,
+                status=status,
+                confirmation_code=confirmation_code  # Store the confirmation code
             )
+            booking.save()
 
-            # Redirect or render confirmation page
+            # Create context to pass to the confirmation page
             context = {
                 'booking': booking,
-                'confirmation_code': booking.id  # You can create your own confirmation code if needed
+                'confirmation_code': booking.confirmation_code  # Pass the confirmation code
             }
 
-            # Optionally, return a confirmation page
+            # Render the confirmation page with the booking and confirmation code
             return render(request, 'user/booking_confirmation.html', context)
 
         else:
+            # If the form is not valid, display an error message
             return HttpResponse("Form is not valid. Please check the fields.")
     else:
         form = BookingForm()
 
+    # If it's a GET request, render the booking form
     return render(request, 'user/booknow.html', {'form': form, 'vehicle': vehicle})
 
 def vehicle_rentals(request):
@@ -278,7 +290,7 @@ def tariff(req):
 #     return render(req,'user/view_cabs.html',{'Cab':bookings})
 def view_cabs(request,pid):
     cabs = Cab.objects.all()  # Fetch all available cabs
-    return render(request, 'user/view_cabs.html', {'cabs': cabs})
+    return render(request, 'user/view_cabs.html', {'cabs': cabs,'pid':pid})
 
 
 
