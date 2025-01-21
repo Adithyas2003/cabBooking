@@ -140,39 +140,50 @@
         <form action="/booking_confirmation/" method="POST">
             {% csrf_token %}
 
-            <!-- User Name Field -->
-            <div class="mb-3">
-                <label for="user_name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="user_name" name="user_name" required>
-            </div>
+  <!-- User Name Field -->
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" class="form-control" id="name" name="name" required>
+</div>
 
-            <!-- Start Date Field -->
-            <div class="mb-3">
-                <label for="start_date" class="form-label">Start Date</label>
-                <input type="date" class="form-control" id="start_date" name="start_date" required>
-            </div>
+<!-- Phone Number Field -->
+<div class="mb-3">
+    <label for="phone_number" class="form-label">Phone Number</label>
+    <input type="tel" class="form-control" id="phone_number" name="phone_number" required pattern="^\+?[0-9]{10,15}$" title="Phone number must be between 10 to 15 digits.">
+</div>
 
-            <!-- End Date Field -->
-            <div class="mb-3">
-                <label for="end_date" class="form-label">End Date</label>
-                <input type="date" class="form-control" id="end_date" name="end_date" required>
-            </div>
+<!-- Address Field -->
+<div class="mb-3">
+    <label for="address" class="form-label">Address</label>
+    <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+</div>
 
-            <!-- Vehicle Selection -->
-            <div class="mb-3">
-                <label for="vehicle" class="form-label">Select Vehicle</label>
-                <select class="form-control" id="vehicle" name="vehicle" required>
-                    <option value="sedan">Sedan</option>
-                    <option value="suv">SUV</option>
-                    <option value="minivan">Minivan</option>
-                    <option value="luxury">Luxury</option>
-                </select>
-            </div>
+<!-- Start Date Field -->
+<div class="mb-3">
+    <label for="start_date" class="form-label">Start Date</label>
+    <input type="date" class="form-control" id="start_date" name="start_date" required>
+</div>
 
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary">Book Now</button>
-        </form>
-    </div>
+<!-- End Date Field -->
+<div class="mb-3">
+    <label for="end_date" class="form-label">End Date</label>
+    <input type="date" class="form-control" id="end_date" name="end_date" required>
+</div>
+
+<!-- Vehicle Selection -->
+<div class="mb-3">
+    <label for="vehicle" class="form-label">Select Vehicle</label>
+    <select class="form-control" id="vehicle" name="vehicle" required>
+        <option value="sedan">Sedan</option>
+        <option value="suv">SUV</option>
+        <option value="minivan">Minivan</option>
+        <option value="luxury">Luxury</option>
+    </select>
+</div>
+
+<!-- Submit Button -->
+<button type="submit" class="btn btn-primary">Book Now</button>
+</form>
 </body>
 
 </html>
