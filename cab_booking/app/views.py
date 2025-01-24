@@ -137,64 +137,113 @@ def generate_confirmation_code(length=8):
     return ''.join(random.choices(characters, k=length))
 
 
+# def book_now(request, pid=None):
+    
+#     vehicle = get_object_or_404(Cab, id=pid) if pid else None
+
+#     if request.method == 'POST':
+#         form = BookingForm(request.POST)
+#         if form.is_valid():
+          
+#             user = request.user
+#             start_date = form.cleaned_data['start_date']
+#             end_date = form.cleaned_data['end_date']
+#             name = form.cleaned_data['name']
+#             address = form.cleaned_data['address']
+#             phone_number = form.cleaned_data['phone_number']
+#             total_amount = form.cleaned_data['total_amount']
+#             status = form.cleaned_data['status']
+            
+#             confirmation_code = form.cleaned_data.get('confirmation_code', None) or "CONFIRM-" + str(Booking.objects.count() + 1)
+            
+            
+#             booking = Booking.objects.create(
+#                 user=user,
+#                 vehicle=vehicle,
+#                 start_date=start_date,
+#                 end_date=end_date,
+#                 name=name,
+#                 address=address,
+#                 phone_number=phone_number,
+#                 total_amount=total_amount,
+#                 status=status,
+#                 confirmation_code=confirmation_code  
+#             )
+#             booking.save()
+
+            
+#             context = {
+#                 'booking': booking,
+#                 'confirmation_code': booking.confirmation_code  
+#             }
+
+            
+#             return render(request, 'user/booking_confirmation.html', context)
+
+#         else:
+            
+#             return HttpResponse("Form is not valid. e form is not valid, display an error messagePlease check the fields.")
+#     else:
+#         form = BookingForm()
+
+#     return render(request, 'user/booknow.html', {'form': form, 'vehicle': vehicle})
 def book_now(request, pid=None):
     # Fetch the vehicle if pid is provided
     vehicle = get_object_or_404(Cab, id=pid) if pid else None
 
     if request.method == 'POST':
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            # Get the cleaned data from the form
-            user = request.user
-            start_date = form.cleaned_data['start_date']
-            end_date = form.cleaned_data['end_date']
-            name = form.cleaned_data['name']
-            address = form.cleaned_data['address']
-            phone_number = form.cleaned_data['phone_number']
-            total_amount = form.cleaned_data['total_amount']
-            status = form.cleaned_data['status']
-            # Generate or use a confirmation code (if not included in the form)
-            confirmation_code = form.cleaned_data.get('confirmation_code', None) or "CONFIRM-" + str(Booking.objects.count() + 1)
-            
-            # Create a Booking instance and save it to the database
-            booking = Booking.objects.create(
-                user=user,
-                vehicle=vehicle,
-                start_date=start_date,
-                end_date=end_date,
-                name=name,
-                address=address,
-                phone_number=phone_number,
-                total_amount=total_amount,
-                status=status,
-                confirmation_code=confirmation_code  # Store the confirmation code
-            )
-            booking.save()
+        # Manually get data from the POST request
+        user = request.user
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        name = request.POST.get('name')
+        address = request.POST.get('address')
+        phone_number = request.POST.get('phone_number')
+        total_amount = request.POST.get('total_amount')
+        status = request.POST.get('status')
+        
+        # Handle cases where total_amount or any required fields are missing
+        if not total_amount:
+            return HttpResponse("Total amount is required.")
 
-            # Create context to pass to the confirmation page
-            context = {
-                'booking': booking,
-                'confirmation_code': booking.confirmation_code  # Pass the confirmation code
-            }
+        # Generate or use a confirmation code (if not included in the form)
+        confirmation_code = "CONFIRM-" + str(Booking.objects.count() + 1)
 
-            # Render the confirmation page with the booking and confirmation code
-            return render(request, 'user/booking_confirmation.html', context)
+        # Create the Booking instance and save it to the database
+        booking = Booking.objects.create(
+            user=user,
+            vehicle=vehicle,
+            start_date=start_date,
+            end_date=end_date,
+            name=name,
+            address=address,
+            phone_number=phone_number,
+            total_amount=total_amount,
+            status=status,
+            confirmation_code=confirmation_code  # Store the confirmation code
+        )
+        booking.save()
 
-        else:
-            # If the form is not valid, display an error message
-            return HttpResponse("Form is not valid. Please check the fields.")
+        # Create context to pass to the confirmation page
+        context = {
+            'booking': booking,
+            'confirmation_code': booking.confirmation_code  # Pass the confirmation code
+        }
+
+        return render(request, 'user/booking_confirmation.html', context)
+
     else:
-        form = BookingForm()
+        # For GET requests, just render the booking form
+        return render(request, 'user/booknow.html', {'vehicle': vehicle})
 
-    # If it's a GET request, render the booking form
-    return render(request, 'user/booknow.html', {'form': form, 'vehicle': vehicle})
+
 
 def vehicle_rentals(request):
-    vehicles = Vehicle.objects.all()  # Fetch all vehicle rental details
+    vehicles = Vehicle.objects.all()  
     return render(request, 'user/tariff.html', {'vehicles': vehicles})
 def submit_booknow(request):
     if request.method == "POST":
-        # Get the form data
+        
         user_name = request.POST['user_name']
         start_date = request.POST['start_date']
         end_date = request.POST['end_date']

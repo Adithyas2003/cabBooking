@@ -26,16 +26,40 @@
         Status: {{ status }}
       </div>
     {% else %}
-      <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        
-        <!-- Hidden input field for Cab_id -->
-        <input type="hidden" name="pid" value="{{pid}}" />
-
-        <!-- Submit button with Bootstrap styling -->
-        <button type="submit" class="btn btn-success mt-3">Book Now</button>
-      </form>
+    <form method="POST">
+      {% csrf_token %}
+      <div>
+          <label for="start_date">Start Date</label>
+          <input type="date" name="start_date" required>
+      </div>
+      <div>
+          <label for="end_date">End Date</label>
+          <input type="date" name="end_date" required>
+      </div>
+      <div>
+          <label for="name">Name</label>
+          <input type="text" name="name" required>
+      </div>
+      <div>
+          <label for="address">Address</label>
+          <input type="text" name="address" required>
+      </div>
+      <div>
+          <label for="phone_number">Phone Number</label>
+          <input type="text" name="phone_number" required>
+      </div>
+      <div>
+          <label for="total_amount">Total Amount</label>
+          <input type="number" name="total_amount" required>
+      </div>
+      <div>
+          <label for="status">Status</label>
+          <input type="text" name="status" required>
+      </div>
+  
+      <button type="submit">Submit</button>
+  </form>
+  
     {% endif %}
   </div>
 </body>
