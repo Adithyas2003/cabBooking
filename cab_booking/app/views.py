@@ -187,55 +187,6 @@ def generate_confirmation_code(length=8):
 #         form = BookingForm()
 
 #     return render(request, 'user/booknow.html', {'form': form, 'vehicle': vehicle})
-def book_now(request, pid=None):
-    # Fetch the vehicle if pid is provided
-    vehicle = get_object_or_404(Cab, id=pid) if pid else None
-
-    if request.method == 'POST':
-        # Manually get data from the POST request
-        user = request.user
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        name = request.POST.get('name')
-        address = request.POST.get('address')
-        phone_number = request.POST.get('phone_number')
-        total_amount = request.POST.get('total_amount')
-        status = request.POST.get('status')
-        
-        # Handle cases where total_amount or any required fields are missing
-        if not total_amount:
-            return HttpResponse("Total amount is required.")
-
-        # Generate or use a confirmation code (if not included in the form)
-        confirmation_code = "CONFIRM-" + str(Booking.objects.count() + 1)
-
-        # Create the Booking instance and save it to the database
-        booking = Booking.objects.create(
-            user=user,
-            vehicle=vehicle,
-            start_date=start_date,
-            end_date=end_date,
-            name=name,
-            address=address,
-            phone_number=phone_number,
-            total_amount=total_amount,
-            status=status,
-            confirmation_code=confirmation_code  # Store the confirmation code
-        )
-        booking.save()
-
-        # Create context to pass to the confirmation page
-        context = {
-            'booking': booking,
-            'confirmation_code': booking.confirmation_code  # Pass the confirmation code
-        }
-
-        return render(request, 'user/booking_confirmation.html', context)
-
-    else:
-        # For GET requests, just render the booking form
-        return render(request, 'user/booknow.html', {'vehicle': vehicle})
-
 
 
 def vehicle_rentals(request):
@@ -340,45 +291,54 @@ def tariff(req):
 def view_cabs(request,pid):
     cabs = Cab.objects.all()  # Fetch all available cabs
     return render(request, 'user/view_cabs.html', {'cabs': cabs,'pid':pid})
+def generate_confirmation_code(length=8):
+    # Logic to generate a unique confirmation code, e.g., using random and string methods
+    import random
+    import string
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
+def book_now(request, cab_id):
+    cab = get_object_or_404(Cab, id=cab_id)  # Get the selected cab
 
-
-# def book_now(request, cab_id):
-#     cab = Cab.objects.get(id=cab_id)  # Get the selected cab
-#     confirmation_code = 45678
-
-#     if request.method == 'POST':
-#         form = BookingForm(request.POST)
-#         if form.is_valid():
-#             # Save the booking details
-#             booking = form.save(commit=False)
-#             booking.user = request.user  # Associate the booking with the logged-in user
-#             booking.cab = cab  # Associate the booking with the selected cab
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            # Save the booking details
+            booking = form.save(commit=False)
+            booking.user = request.user  # Associate the booking with the logged-in user
+            booking.cab = cab  # Associate the booking with the selected cab
             
-#             # Generate and assign the confirmation code
-#             booking.confirmation_code = generate_confirmation_code()  # Dynamically generate a unique code
+            # Additional fields
+            booking.phone_number = form.cleaned_data.get('phone_number')
+            booking.name = form.cleaned_data.get('name')
+            booking.total_amount = form.cleaned_data.get('total_amount')
+            booking.status = form.cleaned_data.get('status')
             
-#             booking.save()
+            # Generate and assign the confirmation code
+            booking.confirmation_code = generate_confirmation_code()  # Dynamically generate a unique code
+            
+            booking.save()
 
-#             # Render the confirmation page
-#             return render(request, 'book_now.html', {
-#                 'confirmation_code': booking.confirmation_code,
-#                 'user': request.user,
-#                 'vehicle': cab,
-#                 'start_date': booking.start_date,
-#                 'end_date': booking.end_date,
-#                 'total_amount': booking.total_amount,
-#                 'status': booking.status,
-#                 'Cab_id': cab.id,
-#             })
-#     else:
-#         form = BookingForm()
+            # Render the confirmation page with all relevant details
+            return render(request, 'user/booking_confirmation.html', {
+                'confirmation_code': booking.confirmation_code,
+                'user': request.user,
+                'vehicle': cab,
+                'start_date': booking.start_date,
+                'end_date': booking.end_date,
+                'total_amount': booking.total_amount,
+                'status': booking.status,
+                'phone_number': booking.phone_number,
+                'name': booking.name,
+            })
+    else:
+        form = BookingForm()
 
-#     # Render the form page for booking
-#     return render(request, 'book_now.html', {
-#         'form': form,
-#         'Cab_id': cab.id,
-#     })
+    # Render the form page for booking
+    return render(request, 'user/booking_confirmation.html', {
+        'form': form,
+        'cab_id': cab.id,
+    })
 def booking_confirmation(request):
     # Generate the confirmation code (OTP)
     confirmation_code = generate_confirmation_code(length=8)  # Generate an 8-character alphanumeric confirmation code

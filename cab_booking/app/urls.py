@@ -29,7 +29,9 @@ urlpatterns=[
     path('booking_confirmation/', views.booking_confirmation, name='booking_confirmation'),  # Confirmation page
     # path('book_vehicle/<int:pid>/', views.book_form),
     path('book_form/<pid>/',views. book_form),
-    path('book_now/<pid>', views.book_now),  
+    # Correct URL Pattern
+    path('book_now/<int:cab_id>', views.book_now, name='book_now'),
+ 
     # path('book_now/<int:pid>/', views.book_now, name='book_now_with_pid'),  # Vehicle selected by 'pid'
     path('submit_booknow/',views. submit_booknow),
 
