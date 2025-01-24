@@ -30,7 +30,7 @@
         </div>
     </header> 
 
-    <form method="POST" action="{% url 'submit_booknow' %}">
+    <form method="POST" action="{% url 'booking_confirmation' %}">
         {% csrf_token %}
         <!-- Your form fields here -->
         <button type="submit" class="btn btn-success">Submit Booking</button>

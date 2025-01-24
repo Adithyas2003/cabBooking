@@ -293,8 +293,7 @@ def view_cabs(request,pid):
     return render(request, 'user/view_cabs.html', {'cabs': cabs,'pid':pid})
 def generate_confirmation_code(length=8):
     # Logic to generate a unique confirmation code, e.g., using random and string methods
-    import random
-    import string
+   
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
 def book_now(request, cab_id):
@@ -339,6 +338,7 @@ def book_now(request, cab_id):
         'form': form,
         'cab_id': cab.id,
     })
+
 def booking_confirmation(request):
     # Generate the confirmation code (OTP)
     confirmation_code = generate_confirmation_code(length=8)  # Generate an 8-character alphanumeric confirmation code
