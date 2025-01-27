@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from app.views import book_now
 
   
 urlpatterns=[
