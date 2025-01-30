@@ -300,43 +300,17 @@ def book_now(request, cab_id):
     cab = get_object_or_404(Cab, id=cab_id)  
 
     if request.method == 'POST':
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            # Save the booking details
-            booking = form.save(commit=False)
-            booking.user = request.user  
-            booking.cab = cab  
-            
-            # Additional fields
-            booking.phone_number = form.cleaned_data.get('phone_number')
-            booking.name = form.cleaned_data.get('name')
-            booking.total_amount = form.cleaned_data.get('total_amount')
-            booking.status = form.cleaned_data.get('status')
-            
-            
-            booking.confirmation_code = generate_confirmation_code()  
-            
-            booking.save()
+        name_user=request.POST['name']
+        phone_number=request.POST['phone_number']
+        address=request.POST['address']
+        start_date=request.POST['start_date']
+        end_date=request.POST['end_date']
+        vehicle_type=request.POST['vehicle_type']
+        cab_instance = get_object_or_404(Cab, vehicle_type=vehicle_type) 
 
-            
-            return render(request, 'user/booking_confirmation.html', {
-                'confirmation_code': booking.confirmation_code,
-                'user': request.user,
-                'vehicle': cab,
-                'start_date': booking.start_date,
-                'end_date': booking.end_date,
-                'total_amount': booking.total_amount,
-                'status': booking.status,
-                'phone_number': booking.phone_number,
-                'name': booking.name,
-            })
-    else:
-        form = BookingForm()
-
-    return render(request, 'user/booking_confirmation.html', {
-        'form': form,
-        'cab_id': cab.id,
-    })
+        booking=Booking.objects.create(name=name_user,phone_number=phone_number,address=address,start_date=start_date,end_date=end_date,vehicle=vehicle_type)
+        booking.save()
+    return render(request, 'user/booknow.html')
 
 def booking_confirmation(request):
    

@@ -137,7 +137,7 @@
         </div>
         {% endif %} <!-- Corrected: Added space between if and endif -->
         
-        <form action="/booking_confirmation/" method="POST">
+        <form action="/book_now/{{pid}}" method="POST">
             {% csrf_token %}
 
   <!-- User Name Field -->
@@ -172,12 +172,12 @@
 
 <!-- Vehicle Selection -->
 <div class="mb-3">
-    <label for="vehicle" class="form-label">Select Vehicle</label>
-    <select class="form-control" id="vehicle" name="vehicle" required>
+    <label for="vehicle_type" class="form-label">Select Vehicle</label>
+    <select class="form-control" id="vehicle_type" name="vehicle_type" required>
         <option value="sedan">Sedan</option>
-        <option value="suv">SUV</option>
+        <!-- <option value="suv">SUV</option>
         <option value="minivan">Minivan</option>
-        <option value="luxury">Luxury</option>
+        <option value="luxury">Luxury</option> -->
     </select>
 </div>
 
