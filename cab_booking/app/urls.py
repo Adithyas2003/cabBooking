@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from app.views import book_now
 
   
 urlpatterns=[
@@ -26,14 +25,14 @@ urlpatterns=[
     path('services/',views.services),
     path('view_cabs/<pid>',views.view_cabs),
     path('tariff/',views.tariff),
-    path('vehicles/', views.vehicle_rentals, name='vehicle_rentals'),
-    path('booking_confirmation/', views.booking_confirmation, name='booking_confirmation'),  # Confirmation page
+    path('vehicles/', views.vehicle_rentals),
+
     # path('book_vehicle/<int:pid>/', views.book_form),
     path('book_form/<pid>/',views. book_form),
    
     path('book_now/<pid>', views.book_now),
  
-    # path('book_now/<int:pid>/', views.book_now, name='book_now_with_pid'),  # Vehicle selected by 'pid'
+    # path('book_now/<int:pid>/', views.book_now),  # Vehicle selected by 'pid'
     path('submit_booknow/',views. submit_booknow),
 
 

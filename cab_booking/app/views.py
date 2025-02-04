@@ -6,6 +6,7 @@ from .forms import *
 from django.utils.crypto import get_random_string
 import os
 import string
+from datetime import datetime
 from django.contrib.auth.models import User
 import random
 from datetime import datetime
@@ -290,6 +291,7 @@ def tariff(req):
 #     return render(req,'user/view_cabs.html',{'Cab':bookings})
 def view_cabs(request,pid):
     cabs = Cab.objects.all()  # Fetch all available cabs
+    print(pid)
     return render(request, 'user/view_cabs.html', {'cabs': cabs,'pid':pid})
 def generate_confirmation_code(length=8):
   
@@ -297,28 +299,34 @@ def generate_confirmation_code(length=8):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
 def book_now(request,pid):
-    cab= Cab.objects.get(pk=pid)  
+    cab= Cab.objects.get(pk=pid)
+    user=User.objects.get(username=request.session['user'])  
+   
+    print(cab)
 
     if request.method == 'POST':
-        name_user=request.POST['name']
+        name=request.POST['name']
         phone_number=request.POST['phone_number']
         address=request.POST['address']
         start_date=request.POST['start_date']
         end_date=request.POST['end_date']
         vehicle_type=request.POST['vehicle_type']
-        cab_instance = get_object_or_404(Cab, vehicle_type=vehicle_type) 
-    
-        booking=Booking.objects.create(name=name_user,phone_number=phone_number,address=address,start_date=start_date,end_date=end_date,vehicle=vehicle_type)
+        price = float(request.POST.get('price', 0))
+        days = int(request.POST.get('days', 0)) 
+        total_amount = price * days
+        date1 = datetime.strptime(start_date, "%Y-%m-%d").date()
+        date2 = datetime.strptime(end_date, "%Y-%m-%d").date()
+        date3=(date2-date1).days
+        print(date3, "days")
+        # print(end_date-start_date)
+       
+        confirmation_code = generate_confirmation_code(length=8)  
+        
+        print(f"Generated Confirmation Code: {confirmation_code}")  
+        booking=Booking.objects.create(user=user,name=name,phone_number=phone_number,address=address,start_date=start_date,end_date=end_date,vehicle=cab,confirmation_code=confirmation_code,total_amount=total_amount)
         booking.save()
-    return render(request, 'user/booknow.html',{'cab': Cab})
-
-def booking_confirmation(request):
-   
-    confirmation_code = generate_confirmation_code(length=8)  
+        return render(request,'user/booking_confirmation.html')
     
-    print(f"Generated Confirmation Code: {confirmation_code}")  
-    
-    return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
 
 
 # @login_required
