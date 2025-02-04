@@ -296,8 +296,8 @@ def generate_confirmation_code(length=8):
    
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
-def book_now(request, cab_id):
-    cab = get_object_or_404(Cab, id=cab_id)  
+def book_now(request,pid):
+    cab= Cab.objects.get(pk=pid)  
 
     if request.method == 'POST':
         name_user=request.POST['name']
@@ -307,10 +307,10 @@ def book_now(request, cab_id):
         end_date=request.POST['end_date']
         vehicle_type=request.POST['vehicle_type']
         cab_instance = get_object_or_404(Cab, vehicle_type=vehicle_type) 
-
+    
         booking=Booking.objects.create(name=name_user,phone_number=phone_number,address=address,start_date=start_date,end_date=end_date,vehicle=vehicle_type)
         booking.save()
-    return render(request, 'user/booknow.html')
+    return render(request, 'user/booknow.html',{'cab': Cab})
 
 def booking_confirmation(request):
    

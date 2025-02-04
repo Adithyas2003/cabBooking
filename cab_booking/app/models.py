@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class Cab(models.Model):
     pid=models.TextField()
+    vehicle_type = models.CharField(max_length=100) 
     number_plate = models.CharField(max_length=15, unique=True)
     model = models.CharField(max_length=50)
     driver_name = models.CharField(max_length=100)
