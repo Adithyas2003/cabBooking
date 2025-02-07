@@ -16,12 +16,14 @@
         margin: 0;
         padding: 0;
         line-height: 1.6;
+        background-color: #f2f2f2;
+
     }
 
     /* Header */
    
 header {
-    background-color: #333;
+    background-color: #343a40;
     color: #fff;
     padding: 10px 20px;
     position: fixed;
@@ -29,12 +31,15 @@ header {
     top: 0;
     left: 0;
     z-index: 1000;
+    
 }
 
 .main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 20px;
+
 }
 header .main-header img {
     width: 100px;
@@ -676,8 +681,7 @@ ul li a:hover {
                             <p class="card-text">{{ cabs.model }}</p>
                             <h5 class="card-title">{{ cabs.driver_name }}</h5>
                             <p class="card-text">{{ cabs.avilable }}</p>
-                            <p class="card-text text-muted" style="text-decoration: line-through;">Price: ${{ cabs.price
-                                }}</p>
+                            <p class="card-text"> ${{ cabs.price }}</p>
                         </div>
                     </div>
                 </a>

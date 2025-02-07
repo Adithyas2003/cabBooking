@@ -298,36 +298,62 @@ def generate_confirmation_code(length=8):
    
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
-def book_now(request,pid):
-    cab= Cab.objects.get(pk=pid)
-    user=User.objects.get(username=request.session['user'])  
-   
-    print(cab)
-
+def book_now(request, pid):
+    cab = Cab.objects.get(pk=pid)  # Fetch the cab based on the given id (pid)
+    user = User.objects.get(username=request.session['user'])  # Get the logged-in user
+    
     if request.method == 'POST':
-        name=request.POST['name']
-        phone_number=request.POST['phone_number']
-        address=request.POST['address']
-        start_date=request.POST['start_date']
-        end_date=request.POST['end_date']
-        vehicle_type=request.POST['vehicle_type']
-        price = float(request.POST.get('price', 0))
-        days = int(request.POST.get('days', 0)) 
-        total_amount = price * days
+        # Collect form data
+        name = request.POST['name']
+        phone_number = request.POST['phone_number']
+        address = request.POST['address']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        vehicle_type = request.POST['vehicle_type']
+        
+        # Extract price and days from the form data
+        price = float(cab.price)  # Use the price of the cab from the model (assuming `price` field exists on the `Cab` model)
+        days = int(request.POST.get('days', 0))  # Calculate the number of days (if days are provided in the form)
+
+        # Calculate the total amount
+                # Fetch the price of the cab (price per day)
+        price = float(cab.price)  # Assuming 'price' is a field in the Cab model, which is the price per day
+        
+        # Calculate the number of days between the start date and end date
         date1 = datetime.strptime(start_date, "%Y-%m-%d").date()
         date2 = datetime.strptime(end_date, "%Y-%m-%d").date()
-        date3=(date2-date1).days
-        print(date3, "days")
-        # print(end_date-start_date)
-       
-        confirmation_code = generate_confirmation_code(length=8)  
+        date_diff = (date2 - date1).days  # Number of days between start and end date
         
-        print(f"Generated Confirmation Code: {confirmation_code}")  
-        booking=Booking.objects.create(user=user,name=name,phone_number=phone_number,address=address,start_date=start_date,end_date=end_date,vehicle=cab,confirmation_code=confirmation_code,total_amount=total_amount)
-        booking.save()
-        return render(request,'user/booking_confirmation.html')
-    
+        # Ensure the duration is valid (positive number of days)
+        if date_diff <= 0:
+            return render(request, 'user/error_page.html', {'error': "Invalid date range. End date must be after start date."})
 
+        # Calculate the total amount (price per day * number of days)
+        total_amount = price * date_diff
+        
+        # Print the calculated duration and total amount
+        print(f"Duration in days: {date_diff} days, Total Amount: ${total_amount:.2f}")
+        
+        # Generate a confirmation code (assuming you have a function for this)
+        confirmation_code = generate_confirmation_code(length=8)
+        print(f"Generated Confirmation Code: {confirmation_code}")
+        
+        # Create and save the booking record in the database
+        booking = Booking.objects.create(
+            user=user,
+            name=name,
+            phone_number=phone_number,
+            address=address,
+            start_date=start_date,
+            end_date=end_date,
+            vehicle=cab,
+            confirmation_code=confirmation_code,
+            total_amount=total_amount
+        )
+        booking.save()
+        
+        # Render the confirmation page with the generated confirmation code
+        return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
 
 # @login_required
 # def view_bookings(request):
@@ -370,9 +396,9 @@ def book_now(request,pid):
 #         'bookings': bookings,
        
 #     })
-@staff_member_required  # Ensure only admin users (staff) can access this view
+@staff_member_required  
 def view_bookings(request):
-    # Fetch all bookings in the system
-    bookings = Booking.objects.all()  # All bookings, regardless of user
+    
+    bookings = Booking.objects.all()  
     
     return render(request, 'admin/view_bookings.html', {'bookings': bookings})

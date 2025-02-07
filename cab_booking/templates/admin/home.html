@@ -14,11 +14,36 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
+            background-color: #f2f2f2;
+
         }
+        .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the image and the text */
+}
+
+.logo img {
+    width: 80px; /* Adjust the size of the logo */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Optional: Rounded corners */
+}
+
+.logo h1 {
+    font-size: 1.8rem; /* Adjust font size */
+    font-weight: bold; /* Bold text for emphasis */
+    color:white; /* Text color */
+    font-family: 'Arial', sans-serif; /* Font style */
+    text-transform: uppercase; /* Uppercase text */
+    letter-spacing: 2px; /* Space between letters */
+    margin: 0; /* Remove default margin */
+}
 
         /* Header */
         header {
-            background: white;
+            background: white;            
+            background-color: #343a40;
+
             padding: 10px 20px;
         }
 
@@ -36,7 +61,7 @@
         header h1 {
             margin-left: 10px;
             font-size: 1.8rem;
-            color: #333;
+            color:white;
             font-style: italic;
         }
 
@@ -53,7 +78,7 @@
         }
 
         nav ul li a {
-            color: black;
+            color: white;
             text-decoration: none;
             font-size: 1rem;
             padding: 5px 10px;
@@ -179,10 +204,7 @@
             <nav>
                 <ul>
                     <li><a href="">Home</a></li>
-                    <!-- <li><a href="about">About Us</a></li>
-                    <li><a href="services">Services</a></li>
-                    <li><a href="tariff">Tariff</a></li>
-                    <li><a href="contact">Contact</a></li> -->
+                    
                     <li><a href="add_cab">add_cabs</a></li>
                     <li><a href="view_bookings">view_bookings</a></li>
                     
@@ -216,7 +238,7 @@
                             <p class="card-text">{{cabs.model}}</p>
                             <h5 class="card-title">{{cabs.driver_name}}</h5>
                             <p class="card-text">{{cabs.avilable}}</p>
-                            <p class="card-text text-muted" style="text-decoration: line-through;">Price: ${{ cabs.price }}</p>
+                            <p class="card-text ">Price: ${{ cabs.price }}</p>
                             <a href="edit_cab/{{cabs.pk}}" class="btn btn-info">edit</a>
                             <a href="delete_cab/{{cabs.pk}}" class="btn btn-danger">delete</a>
                         </div>
