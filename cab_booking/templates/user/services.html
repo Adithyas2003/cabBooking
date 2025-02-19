@@ -6,16 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kamath Cabs</title>
 <style>
-        body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-}
+            body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: black;
+        }
+
+        /* Header */
+
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between image and text */
+        }
+
+        .logo img {
+            width: 80px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
 
 /* Header */
 header {
-    background:white;
+    background:black;
     color: #fff;
     padding: 10px 20px;
 }
@@ -30,12 +62,16 @@ header .main-header img {
     width: 100px;
     height: 80px;
 }
+.logo img{
+    height: 50px;
+    border-radius: 10px;
+}
 
 header h1 {
     display: inline-block;
     margin-left: 10px;
     font-size: 1.8rem;
-    color: #333;
+    color:white;
     font-style: italic;
 }
 
@@ -52,7 +88,7 @@ nav ul li {
 }
 
 nav ul li a {
-    color:black;
+    color:white;
     text-decoration: none;
     font-size: 1rem;
     padding: 5px 10px;
@@ -69,14 +105,14 @@ nav ul li a:hover {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color:black;
 }
 
 .service-card {
     border: 1px solid #ddd;
     border-radius: 5px;
     overflow: hidden;
-    background: #fff;
+    background: black;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -93,16 +129,21 @@ nav ul li a:hover {
 
 .service-card p {
     padding: 0 10px 15px;
-    color: #666;
+    color: white;
 }
 .header h1{
+    text-align: center;
+    color: white;
+}
+.header h3{
+    color: white;
     text-align: center;
 }
 .header p{
     display: inline-block;
     margin-left: 10px;
     font-size: 1.8rem;
-    color: #333;
+    color: white;
     font-style: italic; 
 }
 
@@ -192,8 +233,11 @@ nav ul li a:hover {
     <div class="header">
         <h1>OUR SERVICES</h1>
         <h3>
-            we redefine your travel experience with unmatched comfort, reliability, and style. Whether you're planning a leisurely tour of Kerala's breathtaking landscapes, arranging a luxurious wedding ride or ensuring on time airport transfers we have you covered.Our fleet includes top-tier vehicles suited for every occasion be it a quick city trip, a corporate commute, or a scenic getaway.</h3><h3>With experienced courteous drivers and customized travel packages we ensure that every journey is not just a ride but a memorable experience. Choose Kamath Cabs your trusted partner for seamless travel solutions
-            </h3>
+            "Experience travel redefined with Travel hopper – comfort, style, and reliability for every journey!"
+
+
+
+        </h3>
     </div>
 
     <div class="services-container">

@@ -23,7 +23,7 @@
     /* Header */
    
 header {
-    background-color: #343a40;
+    background-color:black;
     color:black;
     padding: 10px 20px;
     position: fixed;
@@ -53,34 +53,33 @@ header .main-header img {
 
 /* Styling for cards */
 .card {
-    border: 1px solid black;
-    border-radius: 8px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #111; /* Deep Black Card */
+    color: white; /* White text for contrast */
+    border-radius: 10px;
+    border: 1px solid #444; /* Subtle border */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
+/* Card Hover Effect */
 .card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(255, 165, 0, 0.3); /* Orange Glow Effect */
 }
 
-.card-title {
-    font-size: 1.1rem;
-    font-weight: bold;
+/* Card Title & Text */
+.card-title, .card-text {
+    color: white;
 }
 
-.card-text {
-    color: #555;
-    font-size: 0.9rem;
-}
-
-/* Optional: Style card image */
+/* Image Styling */
 .card-img-top {
-    border-radius: 8px 8px 0 0; /* Rounded corners for the image */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
-/* Optionally, add padding to the card body */
-.card-body {
-    padding: 1.25rem;
+/* Link Styling (Remove Underline) */
+.card-link {
+    text-decoration: none;
 }
 
 .logo {
@@ -181,7 +180,7 @@ ul li a:hover {
 
     /* Hero Section */
     .hero {
-        background: url('{% static "/images/istockphoto-519870714-612x612.jpg" %}') no-repeat center center/cover;
+        background: url('{% static "images/photo-1514041181368-bca62cceffcd.avif" %}') no-repeat center center/cover;
         color: #fff;
         padding: 50px 20px;
         text-align: center;
@@ -655,17 +654,17 @@ ul li a:hover {
         
     <!-- Hero Section -->
     <section class="hero">
-
         <div class="hero-content">
-            <!-- <h1>Booking your Cab on Time</h1>
-            <a href="tel:9562826662" class="btn">Call us: 9562826662</a>
-            <a href="https://wa.me/9562826662" class="btn whatsapp">Whatsapp: +91 9562826662</a> -->
+            <h2>Welcome to Travel Hopper</h2>
+            <p>Your journey begins with us!</p>
+            <!-- <a href="whatsapp://send?phone=+1234567890" class="btn whatsapp">WhatsApp Us</a>
+            <a href="https://t.me/your_bot" class="btn telegram">Message on Telegram</a> -->
         </div>
     </section>
     <div class="sect">
         <div class="sect1">
             <div class="image-container">
-                <img src="{% static '/images/pexels-jeshoots-7405.jpg' %}" alt="sectimg">
+                <img src="{% static 'images/photo-1593465678160-f99a8371fcf6.avif' %}" alt="sectimg">
             </div>
             <div class="content-container">
                 <h1>We Are Trusted Name in Car Renting Services</h1>
