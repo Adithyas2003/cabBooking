@@ -16,7 +16,7 @@
         margin: 0;
         padding: 0;
         line-height: 1.6;
-        background-color: #f2f2f2;
+        background-color:black;
 
     }
 
@@ -24,7 +24,7 @@
    
 header {
     background-color: #343a40;
-    color: #fff;
+    color:black;
     padding: 10px 20px;
     position: fixed;
     width: 100%;
@@ -44,6 +44,43 @@ header {
 header .main-header img {
     width: 100px;
     height: 80px;
+}
+/* Remove underline from links */
+.card-link {
+    text-decoration: none;
+    color: inherit; /* Keep text color same as surrounding text */
+}
+
+/* Styling for cards */
+.card {
+    border: 1px solid black;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.card-text {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* Optional: Style card image */
+.card-img-top {
+    border-radius: 8px 8px 0 0; /* Rounded corners for the image */
+}
+
+/* Optionally, add padding to the card body */
+.card-body {
+    padding: 1.25rem;
 }
 
 .logo {
@@ -220,7 +257,7 @@ ul li a:hover {
     .sect {
         width: 100%;
         padding: 40px 0;
-        background-color: #f7f7f7;
+        background-color:black;
     }
 
     .sect1 {
@@ -291,7 +328,7 @@ ul li a:hover {
         padding: 40px 20px;
         max-width: 1200px;
         margin: 0 auto;
-        background-color: white;
+        background-color: black;
     }
 
     .sect2a {
@@ -318,7 +355,7 @@ ul li a:hover {
     .sect2d {
         flex: 1 1 30%;
         padding: 20px;
-        background-color: #fff;
+        background-color: black;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         text-align: center;
@@ -363,14 +400,16 @@ ul li a:hover {
         margin: 40px auto;
         max-width: 800px;
         padding: 20px;
-        background-color: white;
+        background-color:black;
         border-radius: 8px;
     }
 
-
+    .qns{
+        background-color: black;
+    }
 
     .accordion-button {
-        background-color: white;
+        background-color: black;
         color: black;
         border: none;
         font-size: 1.1rem;
@@ -380,24 +419,25 @@ ul li a:hover {
     }
 
     .accordion-button:not(.collapsed) {
-        background-color: white;
+        background-color:black;
     }
 
     .accordion-body {
         font-size: 1rem;
         line-height: 1.6;
-        color: #555;
+        color:white;
         padding: 15px;
-        background-color: #f1f1f1;
+        background-color: black;
     }
-
-    .accordion-item {
-        margin-bottom: 10px;
-    }
-
     .accordion-header {
-        margin-bottom: 10px;
-    }
+    background-color: #333; /* Dark background for the accordion header */
+}
+
+/* Accordion Item Content */
+.accordion-body {
+    background-color: #222; /* Darker background for the content area */
+    color: white; /* White text for the content */
+}
 
     .footer {
         background-color: black;
@@ -617,9 +657,9 @@ ul li a:hover {
     <section class="hero">
 
         <div class="hero-content">
-            <h1>Booking your Cab on Time</h1>
+            <!-- <h1>Booking your Cab on Time</h1>
             <a href="tel:9562826662" class="btn">Call us: 9562826662</a>
-            <a href="https://wa.me/9562826662" class="btn whatsapp">Whatsapp: +91 9562826662</a>
+            <a href="https://wa.me/9562826662" class="btn whatsapp">Whatsapp: +91 9562826662</a> -->
         </div>
     </section>
     <div class="sect">
@@ -667,21 +707,23 @@ ul li a:hover {
 
     </div>
 
-
-    <div class="container" style="max-width: 1200px;">
+    <div class="container" style="max-width: 1200px;background-color: black;">
         <div class="row">
+            <h2>Are you looking for 6 seat cabs ?</h2>
             {% for cabs in Cab %}
             <div class="col-lg-4 mb-4">
-                <a href="view_cabs/{{ cabs.pk }}">
-                    <div class="card">
-                        <img class="card-img-top" src="{{ cabs.img.url }}" alt="Card image"
-                            style="width: 100%; height: auto; object-fit: cover;">
+                <!-- Remove underline from link -->
+                <a href="view_cabs/{{ cabs.pk }}" class="card-link">
+                    <div class="card shadow-sm border-dark">
+                        <!-- Card Image -->
+                        <img class="card-img-top" src="{{ cabs.img.url }}" alt="Cab Image" style="width: 100%; height: 250px; object-fit: cover;">
                         <div class="card-body">
-                            <h4 class="card-title">{{ cabs.number_plate }}</h4>
-                            <p class="card-text">{{ cabs.model }}</p>
-                            <h5 class="card-title">{{ cabs.driver_name }}</h5>
+                            <!-- Cab Information -->
+                            <h4 class="card-title">Numberplate: {{ cabs.number_plate }}</h4>
+                            <p class="card-text">Model: {{ cabs.model }}</p>
+                            <h5 class="card-title">Driver Name: {{ cabs.driver_name }}</h5>
                             <p class="card-text">{{ cabs.avilable }}</p>
-                            <p class="card-text"> ${{ cabs.price }}</p>
+                            <p class="card-text">Price: ${{ cabs.price }}</p>
                         </div>
                     </div>
                 </a>
@@ -689,6 +731,31 @@ ul li a:hover {
             {% endfor %}
         </div>
     </div>
+    <div class="container" style="max-width: 1200px;background-color: black;">
+        <div class="row">
+            <h2>Are you looking for 12 seat cabs ?</h2>
+            {% for cabs in Cab %}
+            <div class="col-lg-4 mb-4">
+                <!-- Remove underline from link -->
+                <a href="view_cabs/{{ cabs.pk }}" class="card-link">
+                    <div class="card shadow-sm border-dark">
+                        <!-- Card Image -->
+                        <img class="card-img-top" src="{{ cabs.img.url }}" alt="Cab Image" style="width: 100%; height: 250px; object-fit: cover;">
+                        <div class="card-body">
+                            <!-- Cab Information -->
+                            <h4 class="card-title">Numberplate: {{ cabs.number_plate }}</h4>
+                            <p class="card-text">Model: {{ cabs.model }}</p>
+                            <h5 class="card-title">Driver Name: {{ cabs.driver_name }}</h5>
+                            <p class="card-text">{{ cabs.avilable }}</p>
+                            <p class="card-text">Price: ${{ cabs.price }}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
 
 
     <div class="qn">

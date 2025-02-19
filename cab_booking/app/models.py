@@ -27,6 +27,7 @@ class Booking(models.Model):
     status = models.CharField(max_length=50, default='Pending')
     name = models.CharField(max_length=255)  
     address = models.TextField() 
+    location = models.CharField(max_length=255,null=True,blank=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     def __str__(self):
         return f"Booking for {self.vehicle.vehicle_type} by {self.user.username}"

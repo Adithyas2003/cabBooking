@@ -307,6 +307,7 @@ def book_now(request, pid):
         name = request.POST['name']
         phone_number = request.POST['phone_number']
         address = request.POST['address']
+        location =request.POST['location']
         start_date = request.POST['start_date']
         end_date = request.POST['end_date']
         vehicle_type = request.POST['vehicle_type']
@@ -344,6 +345,7 @@ def book_now(request, pid):
             name=name,
             phone_number=phone_number,
             address=address,
+            location=location,
             start_date=start_date,
             end_date=end_date,
             vehicle=cab,
