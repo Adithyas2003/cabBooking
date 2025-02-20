@@ -706,23 +706,22 @@ ul li a:hover {
 
     </div>
 
-    <div class="container" style="max-width: 1200px;background-color: black;">
+    <div class="container" style="max-width: 1200px; background-color: black; padding: 20px;">
         <div class="row">
-            <h2>Are you looking for 6 seat cabs ?</h2>
+            <h2 style="color: white; text-align: center; width: 100%;">Are you looking for 6-seat cabs?</h2>
             {% for cabs in Cab %}
             <div class="col-lg-4 mb-4">
-                <!-- Remove underline from link -->
-                <a href="view_cabs/{{ cabs.pk }}" class="card-link">
-                    <div class="card shadow-sm border-dark">
+                <a href="view_cabs/{{ cabs.pk }}" class="card-link" style="text-decoration: none; color: inherit;">
+                    <div class="card shadow-sm border-light" style="border-radius: 10px; overflow: hidden; transition: 0.3s;">
                         <!-- Card Image -->
                         <img class="card-img-top" src="{{ cabs.img.url }}" alt="Cab Image" style="width: 100%; height: 250px; object-fit: cover;">
-                        <div class="card-body">
+                        <div class="card-body" style="background-color: #222; color: white; padding: 20px;">
                             <!-- Cab Information -->
-                            <h4 class="card-title">Numberplate: {{ cabs.number_plate }}</h4>
-                            <p class="card-text">Model: {{ cabs.model }}</p>
-                            <h5 class="card-title">Driver Name: {{ cabs.driver_name }}</h5>
-                            <p class="card-text">{{ cabs.avilable }}</p>
-                            <p class="card-text">Price: ${{ cabs.price }}</p>
+                            <h4 class="card-title">NUMBER PLATE : {{ cabs.number_plate }}</h4>
+                            <p class="card-text">MODEL : {{ cabs.model }}</p>
+                            <h5 class="card-title">DRIVER NAME : {{ cabs.driver_name }}</h5>
+                            <p class="card-text">AVAILABLE  {{ cabs.avilable }}</p>
+                            <p class="card-text">PRICE : ${{ cabs.price }}</p>
                         </div>
                     </div>
                 </a>
@@ -730,7 +729,7 @@ ul li a:hover {
             {% endfor %}
         </div>
     </div>
-    <div class="container" style="max-width: 1200px;background-color: black;">
+        <div class="container" style="max-width: 1200px;background-color: black;">
         <div class="row">
             <h2>Are you looking for 12 seat cabs ?</h2>
             {% for cabs in Cab %}

@@ -10,19 +10,75 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <style>
-    body {
+body {
+    background-color: black;
+    color: white; /* Ensures text remains visible */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.card {
+    background-color: #333; /* Darker background for cards */
+    color: white;
+    border: 1px solid #555;
+}
+
+.card a {
+    text-decoration: none; /* Removes underline from links */
+    color: white;
+}
+
+.card a:hover {
+    color: #ddd;
+}
+
+.container {
+    background-color: black;
+}
+
+input, textarea, select {
+    background-color: #222;
+    color: white;
+    border: 1px solid #555;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #aaa;
+}
+
+.btn-primary {
+    background-color: #444;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #666;
+}
+
+body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
         line-height: 1.6;
+        background-color:black;
+
     }
 
     /* Header */
-    header {
-        background: white;
-        color: #fff;
-        padding: 10px 20px;
-    }
+   
+header {
+    background-color:black;
+    color:black;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    
+}
 
     header .main-header {
         display: flex;
@@ -40,7 +96,7 @@
         display: inline-block;
         margin-left: 10px;
         font-size: 1.8rem;
-        color: #333;
+        color:white;
         font-style: italic;
     }
 
@@ -57,7 +113,7 @@
     }
 
     nav ul li a {
-        color: black;
+        color: white;
         text-decoration: none;
         font-size: 1rem;
         padding: 5px 10px;

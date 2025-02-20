@@ -11,19 +11,27 @@
 </head>
 <style>
     body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-}
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+        background-color:black;
 
-/* Header */
+    }
+
+    /* Header */
+   
 header {
-    background:white;
-    color: #fff;
+    background-color:black;
+    color:black;
     padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    
 }
-
 header .main-header {
     display: flex;
     align-items: center;
@@ -39,7 +47,7 @@ header h1 {
     display: inline-block;
     margin-left: 10px;
     font-size: 1.8rem;
-    color: #333;
+    color:white;
     font-style: italic;
 }
 
@@ -56,7 +64,7 @@ nav ul li {
 }
 
 nav ul li a {
-    color:black;
+    color:white;
     text-decoration: none;
     font-size: 1rem;
     padding: 5px 10px;
@@ -67,95 +75,117 @@ nav ul li a:hover {
     border-radius: 4px;
 }
 
-/* Form Fields Styling */
-form {
-    display: flex;
-    flex-direction: column;
-}
+        /* Contact Form */
+        .container {
+            margin-top: 120px; /* Space for fixed header */
+            padding: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-label {
-    margin: 10px 0 5px;
-    font-size: 1rem;
-    color: #333;
-}
+        .contact-form {
+            background:black;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .contact-form h2{
+            color: white;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
 
-input[type="text"],
-input[type="email"],
-select,
-textarea {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    width: 600px;
-    height: auto;
-   
-}
+        label {
+            margin: 10px 0 5px;
+            font-size: 1rem;
+        }
 
-textarea {
-    resize: vertical;
-}
+        input, textarea {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 600px;
+        }
 
-button[type="submit"] {
-    background-color: #333;
-    color: white;
-    border: none;
-    padding: 12px;
-    font-size: 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+        textarea {
+            resize: vertical;
+        }
 
-button[type="submit"]:hover {
-    background-color: #555;
-}
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            margin-top: 10px;
+        }
 
-/* Social Media Section */
-section ul {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
 
-section ul li {
-    margin-right: 15px;
-}
+        /* Contact Info */
+        .contact-info {
+            margin-top: 30px;
+            background:black;
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+        }
 
-section ul li a {
-    color: #333;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: color 0.3s;
-}
+        /* Social Media Links */
+        section ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-section ul li a:hover {
-    color: #007bff;
-}
+        section ul li {
+            margin-right: 15px;
+        }
 
-/* Live Chat Button */
-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    font-size: 1rem;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+        section ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
 
-button:hover {
-    background-color: #0056b3;
-}
+        section ul li a:hover {
+            color: #007bff;
+        }
 
-/* Working Hours Section */
-section p {
-    font-size: 1.1rem;
-    color: #333;
-}
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .contact-form,
+            .contact-info {
+                padding: 15px;
+            }
+        }
 
 
 </style>

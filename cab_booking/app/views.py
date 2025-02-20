@@ -1,6 +1,10 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
+
+
 from .models import *
 from .forms import *
 from django.utils.crypto import get_random_string
@@ -353,9 +357,22 @@ def book_now(request, pid):
             total_amount=total_amount
         )
         booking.save()
+        send_confirmation_email(user.email, confirmation_code)
+
         
         # Render the confirmation page with the generated confirmation code
         return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
+def send_confirmation_email(user_email, confirmation_code):
+    subject = "Cab Booking Confirmation Code"
+    message = f"Your booking is confirmed!\n\nYour confirmation code: {confirmation_code}"
+    
+    send_mail(
+        subject,
+        message,
+        settings.EMAIL_HOST_USER,
+        [user_email],
+        fail_silently=False,
+    )
 
 # @login_required
 # def view_bookings(request):
