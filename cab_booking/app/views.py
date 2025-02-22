@@ -59,15 +59,34 @@ def add_cabs(req) :
             model=req.POST['model']
             driver_name=req.POST['driver_name']
             available=req.POST['available']
+            seats = int(req.POST['seats'])  # Get seat selection
+
             price=req.POST['price']
             file=req.FILES['img']
-            data=Cab.objects.create(number_plate=number_plate,model=model,driver_name=driver_name,available=available,price=price,img=file)
+            data=Cab.objects.create(number_plate=number_plate,model=model,driver_name=driver_name,available=available,seats=seats,price=price,img=file)
+            
             data.save()
-            return redirect(shop_home)
+            return redirect(cab_list)
         else:
             return render(req,'admin/add_cab.html')
     else:
         return redirect(shop_login) 
+def cab_list(request):
+    six_seaters = Cab.objects.filter(seats=6)  
+    twelve_seaters = Cab.objects.filter(seats=12)  
+    fifteen_seaters = Cab.objects.filter(seats=15)  
+    thirty_seaters = Cab.objects.filter(seats=30)  
+
+    context = {
+        'six_seaters': six_seaters,
+        'twelve_seaters': twelve_seaters,
+        'fifteen_seaters': fifteen_seaters,
+        'thirty_seaters': thirty_seaters,
+    }
+    
+    return render(request, 'user/cab_list.html', context)
+
+
 
 def edit_cabs(req,pid):
     if req.method=='POST':
@@ -258,8 +277,22 @@ def e_shop_logout(req):
     req.session.flush()
     return redirect(shop_login)
 
-def contact(req):
-    return render(req,'user/contact.html')
+def contact(request):
+    if request.method == "POST":
+        full_name = request.POST.get('full_name')
+        email_address = request.POST.get('email_address')
+        message = request.POST.get('message')
+
+        if not full_name or not email_address or not message:
+            messages.error(request, "All fields are required.")
+        else:
+            Contact.objects.create(full_name=full_name, email_address=email_address, message=message)
+            messages.success(request, "Your message has been sent successfully!")
+
+            return redirect('contact')  # ✅ Redirect after form submission
+
+    return render(request, 'user/contact.html')  # ✅ Always return a response
+
 def about(req):
     return render(req,'user/about.html')
 def services(req):
@@ -362,6 +395,8 @@ def book_now(request, pid):
         
         # Render the confirmation page with the generated confirmation code
         return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
+    
+
 def send_confirmation_email(user_email, confirmation_code):
     subject = "Cab Booking Confirmation Code"
     message = f"Your booking is confirmed!\n\nYour confirmation code: {confirmation_code}"

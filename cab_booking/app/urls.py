@@ -6,7 +6,9 @@ urlpatterns=[
     path('',views.shop_login),
     path('shop_home',views.shop_home),
     path('logout/',views.e_shop_logout),
-    path('add_cab',views.add_cabs),
+    path('add_cab',views.add_cabs,name='add_cab'),
+    path('cab_list',views.cab_list,name='cab_list'),
+
     path('edit_cab/<pid>',views.edit_cabs),
     path('delete_cab/<pid>',views.delete_cabs),
     path('view_bookings/', views.view_bookings),
@@ -20,7 +22,7 @@ urlpatterns=[
 
     path('user_home',views.user_home),
     path('register/',views.Register),
-    path('contact/',views.contact),
+    path('contact/', views.contact, name='contact'),  
     path('about/',views.about),
     path('services/',views.services),
     path('view_cabs/<pid>',views.view_cabs),

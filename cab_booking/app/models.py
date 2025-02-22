@@ -9,6 +9,8 @@ class Cab(models.Model):
     number_plate = models.CharField(max_length=15, unique=True)
     model = models.CharField(max_length=50)
     driver_name = models.CharField(max_length=100)
+    seats = models.IntegerField(null=True, blank=True)  
+
     available = models.IntegerField()
     price=models.IntegerField()
     img = models.FileField()
@@ -47,3 +49,13 @@ class Address(models.Model):
     name=models.CharField(max_length=255)
     city=models.CharField(max_length=100)
     pincode=models.CharField(max_length=20)
+
+class Contact(models.Model):
+    full_name=models.CharField(max_length=255)
+    email_address=models.EmailField(max_length=255)
+    message=models.CharField(max_length=255)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+def __str__(self):
+    return self.full_name
+
+

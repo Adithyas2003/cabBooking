@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cab List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-dark text-white">
+    <div class="container">
+        
+        <!-- 6-Seater Cabs -->
+        <h1 class="text-center my-4">Available 6-Seater Cabs</h1>
+        <div class="row">
+            {% if six_seaters %}
+                {% for cab in six_seaters %}
+                <div class="col-lg-4 mb-4">
+                    <div class="card shadow-sm border-light bg-secondary">
+                        <img class="card-img-top" src="{{ cab.img.url }}" alt="Cab Image">
+                        <div class="card-body text-white">
+                            <h4>Number Plate: {{ cab.number_plate }}</h4>
+                            <p>Model: {{ cab.model }}</p>
+                            <h5>Driver: {{ cab.driver_name }}</h5>
+                            <p>Price: ${{ cab.price }}</p>
+                            <a href="view_cabs/1{{ cabs.pk }}">
+                                class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No 6-seater cabs available at the moment.</p>
+            {% endif %}
+        </div>
+
+        <!-- 12-Seater Cabs -->
+        <h1 class="text-center my-4">Available 12-Seater Cabs</h1>
+        <div class="row">
+            {% if twelve_seaters %}
+                {% for cab in twelve_seaters %}
+                <div class="col-lg-4 mb-4">
+                    <div class="card shadow-sm border-light bg-secondary">
+                        <img class="card-img-top" src="{{ cab.img.url }}" alt="Cab Image">
+                        <div class="card-body text-white">
+                            <h4>Number Plate: {{ cab.number_plate }}</h4>
+                            <p>Model: {{ cab.model }}</p>
+                            <h5>Driver: {{ cab.driver_name }}</h5>
+                            <p>Price: ${{ cab.price }}</p>
+                            <a href="view_cabs/1{{ cabs.pk }}">
+                                class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No 12-seater cabs available at the moment.</p>
+            {% endif %}
+        </div>
+
+        <!-- 15-Seater Cabs -->
+        <h1 class="text-center my-4">Available 15-Seater Cabs</h1>
+        <div class="row">
+            {% if fifteen_seaters %}
+                {% for cab in fifteen_seaters %}
+                <div class="col-lg-4 mb-4">
+                    <div class="card shadow-sm border-light bg-secondary">
+                        <img class="card-img-top" src="{{ cab.img.url }}" alt="Cab Image">
+                        <div class="card-body text-white">
+                            <h4>Number Plate: {{ cab.number_plate }}</h4>
+                            <p>Model: {{ cab.model }}</p>
+                            <h5>Driver: {{ cab.driver_name }}</h5>
+                            <p>Price: ${{ cab.price }}</p>
+                            <a href="view_cabs/1{{ cabs.pk }}">
+                                class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No 15-seater cabs available at the moment.</p>
+            {% endif %}
+        </div>
+
+        <!-- 30-Seater Cabs -->
+        <h1 class="text-center my-4">Available 30-Seater Cabs</h1>
+        <div class="row">
+            {% if thirty_seaters %}
+                {% for cab in thirty_seaters %}
+                <div class="col-lg-4 mb-4">
+                    <div class="card shadow-sm border-light bg-secondary">
+                        <img class="card-img-top" src="{{ cab.img.url }}" alt="Cab Image">
+                        <div class="card-body text-white">
+                            <h4>Number Plate: {{ cab.number_plate }}</h4>
+                            <p>Model: {{ cab.model }}</p>
+                            <h5>Driver: {{ cab.driver_name }}</h5>
+                            <p>Price: ${{ cab.price }}</p>
+                            <a href="view_cabs/1{{ cabs.pk }}">
+                                class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No 30-seater cabs available at the moment.</p>
+            {% endif %}
+        </div>
+
+    </div>
+</body>
+</html>
