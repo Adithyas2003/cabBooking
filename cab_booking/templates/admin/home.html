@@ -31,7 +31,56 @@ header {
     z-index: 1000;
     
 }
-        .logo {
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+
+}
+header .main-header img {
+    width: 100px;
+    height: 80px;
+}
+/* Remove underline from links */
+.card-link {
+    text-decoration: none;
+    color: inherit; /* Keep text color same as surrounding text */
+}
+
+/* Styling for cards */
+.card {
+    background-color: #111; /* Deep Black Card */
+    color: white; /* White text for contrast */
+    border-radius: 10px;
+    border: 1px solid #444; /* Subtle border */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Card Hover Effect */
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(255, 165, 0, 0.3); /* Orange Glow Effect */
+}
+
+/* Card Title & Text */
+.card-title, .card-text {
+    color: white;
+}
+
+/* Image Styling */
+.card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Link Styling (Remove Underline) */
+.card-link {
+    text-decoration: none;
+}
+
+.logo {
     display: flex;
     align-items: center;
     gap: 10px; /* Space between the image and the text */
@@ -53,56 +102,97 @@ header {
     margin: 0; /* Remove default margin */
 }
 
-        /* Header */
-        header {
-            background: white;            
-            background-color: black;
+/* Navigation Links */
+ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
 
-            padding: 10px 20px;
-        }
+ul li {
+    margin: 0 10px;
+}
 
-        header .main-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
 
-        header .main-header img {
-            width: 100px;
-            height: 80px;
-        }
+ul li a:hover {
+    color: #4caf50;
+}
 
-        header h1 {
-            margin-left: 10px;
-            font-size: 1.8rem;
-            color:white;
-            font-style: italic;
-        }
+/* Hamburger Icon */
+.menu-icon {
+    /* display: none;  */
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+    margin-right: 200px;
+}
 
-        /* Navigation */
-        nav ul {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+.menu-icon .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 2px;
+    
+}
+/* Hamburger Icon */
+.menu-icon {
+    display: none; /* Initially hidden, visible on small screens */
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
 
-        nav ul li {
-            margin-left: 20px;
-        }
+.menu-icon .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 2px;
+    margin-right: 50px;
+    margin-left: 500px;
+    top: 50px;
+    
+}
 
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 1rem;
-            padding: 5px 10px;
-        }
+/* Menu Toggle Checkbox */
+.menu-toggle {
+    display: none; /* Hidden checkbox for toggling menu */
+}
 
-        nav ul li a:hover {
-            background-color: #444;
-            border-radius: 4px;
-        }
+/* Mobile Menu */
+.menu-toggle:checked~ul {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px; /* Adjust based on header height */
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    padding: 10px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
+.menu-toggle:checked~ul li {
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    ul {
+        display: none; /* Hide menu by default on smaller screens */
+    }
+
+    .menu-icon {
+        display: flex; /* Show hamburger menu on smaller screens */
+    }
+}
         /* Hero Section */
         .hero {
             background: url('{% static "images/photo-1514041181368-bca62cceffcd.avif" %}') no-repeat center center/cover;
@@ -215,19 +305,28 @@ header {
                 <img src="{% static '/images/Untitled design.png' %}" alt="logo">
                 <h1>TRAVEL HOPPER</h1>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="">Home</a></li>
-                    
-                    <li><a href="add_cab">Add Cab</a></li>
-                    <li><a href="view_bookings">View Bookings</a></li>
-                    
-
-                    <li><a href="logout">Logout</a></li>
-                </ul>
-            </nav>
+            
+    
+            <!-- Hamburger Icon -->
+            <label class="menu-icon" for="menu-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </label>
+    
+            <!-- Menu Toggle Checkbox -->
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    
+            <!-- Navigation Links -->
+            <ul>
+                <li><a href="/">Home</a></li>
+                <!-- <li><a href="../about">About Us</a></li> -->
+                <li><a href="../add_cab">Add Cabs</a></li>
+                <li><a href="../logout">Logout</a></li>
+        </ul>
         </div>
     </header>
+ 
 
     <!-- Hero Section -->
     <section class="hero">
@@ -272,5 +371,11 @@ header {
     </footer>
 
 </body>
+<script>
+    // Toggle the navbar visibility when hamburger icon is clicked
+    document.getElementById("hamburger-icon").addEventListener("click", function () {
+        document.querySelector(".navbar").classList.toggle("active");
+    });
+</script>
 
 </html>

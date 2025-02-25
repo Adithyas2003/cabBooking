@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Cabs</title>
@@ -11,11 +13,185 @@
             padding: 0;
             background-color: black;
         }
+        
+        header {
+    background-color:black;
+    color:black;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+
+}
+header .main-header img {
+    width: 100px;
+    height: 80px;
+}
+/* Remove underline from links */
+.card-link {
+    text-decoration: none;
+    color: inherit; /* Keep text color same as surrounding text */
+}
+
+/* Styling for cards */
+.card {
+    background-color: #111; /* Deep Black Card */
+    color: white; /* White text for contrast */
+    border-radius: 10px;
+    border: 1px solid #444; /* Subtle border */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Card Hover Effect */
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(255, 165, 0, 0.3); /* Orange Glow Effect */
+}
+
+/* Card Title & Text */
+.card-title, .card-text {
+    color: white;
+}
+
+/* Image Styling */
+.card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Link Styling (Remove Underline) */
+.card-link {
+    text-decoration: none;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the image and the text */
+}
+
+.logo img {
+    width: 80px; /* Adjust the size of the logo */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Optional: Rounded corners */
+}
+
+.logo h1 {
+    font-size: 1.8rem; /* Adjust font size */
+    font-weight: bold; /* Bold text for emphasis */
+    color:white; /* Text color */
+    font-family: 'Arial', sans-serif; /* Font style */
+    text-transform: uppercase; /* Uppercase text */
+    letter-spacing: 2px; /* Space between letters */
+    margin: 0; /* Remove default margin */
+}
+
+/* Navigation Links */
+ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    margin: 0 10px;
+}
+
+ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+ul li a:hover {
+    color: #4caf50;
+}
+
+/* Hamburger Icon */
+.menu-icon {
+    /* display: none;  */
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+    margin-right: 200px;
+}
+
+.menu-icon .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 2px;
+    
+}
+/* Hamburger Icon */
+.menu-icon {
+    display: none; /* Initially hidden, visible on small screens */
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.menu-icon .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    border-radius: 2px;
+    margin-right: 50px;
+    margin-left: 500px;
+    top: 50px;
+    
+}
+
+/* Menu Toggle Checkbox */
+.menu-toggle {
+    display: none; /* Hidden checkbox for toggling menu */
+}
+
+/* Mobile Menu */
+.menu-toggle:checked~ul {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px; /* Adjust based on header height */
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    padding: 10px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.menu-toggle:checked~ul li {
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    ul {
+        display: none; /* Hide menu by default on smaller screens */
+    }
+
+    .menu-icon {
+        display: flex; /* Show hamburger menu on smaller screens */
+    }
+}
 
         .form-container {
             width: 50%;
             margin: 50px auto;
-            padding: 20px;
+            padding: 40px;
             background: black;
             border: 1px solid #ddd;
             border-radius: 5px;
@@ -26,6 +202,7 @@
             text-align: center;
             margin-bottom: 20px;
             color: white;
+            padding: 20px;
         }
 
         .form-group {
@@ -68,6 +245,34 @@
     </style>
 </head>
 <body>
+    <header>
+        <div class="main-header">
+            <div class="logo">
+                <img src="{% static '/images/Untitled design.png' %}" alt="logo">
+                <h1>TRAVEL HOPPER</h1>
+            </div>
+            
+    
+            <!-- Hamburger Icon -->
+            <label class="menu-icon" for="menu-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </label>
+    
+            <!-- Menu Toggle Checkbox -->
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+    
+            <!-- Navigation Links -->
+            <ul>
+                <li><a href="/">Home</a></li>
+                <!-- <li><a href="../about">About Us</a></li> -->
+                <li><a href="../add_cab">Add Cabs</a></li>
+                <li><a href="../logout">Logout</a></li>
+        </ul>
+        </div>
+    </header>
+
     <div class="form-container">
         <h1>Add New Cab</h1>
         <form method="POST" enctype="multipart/form-data">
@@ -124,4 +329,11 @@
         </form>
     </div>
 </body>
+<script>
+    // Toggle the navbar visibility when hamburger icon is clicked
+    document.getElementById("hamburger-icon").addEventListener("click", function () {
+        document.querySelector(".navbar").classList.toggle("active");
+    });
+</script>
+
 </html>
