@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Your Bookings</title>
+    <style>
+         body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            color: #FF6347; 
+        }
+
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #444;
+        }
+
+        th {
+            background-color: #333;
+            color: #FF6347; 
+        }
+
+        tr:nth-child(even) {
+            background-color: #2f2f2f;
+        }
+
+        tr:hover {
+            background-color: #444;
+        }
+
+        p {
+            text-align: center;
+            color: #FF6347;
+        }
+
+       
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5em; 
+            }
+
+            table {
+                width: 100%;
+                font-size: 14px; 
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2em; 
+            }
+
+            table {
+                font-size: 12px; 
+            }
+
+            th, td {
+                padding: 6px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    
+    <h1>Your Bookings</h1>
+    {% if bookings %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Cab Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Total Amount</th>
+                    <th>Confirmation Code</th>
+                    <th>Action</th> <!-- Add a column for actions -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.id }}</td>
+                    <td>{{ booking.vehicle }}</td>
+                    <td>{{ booking.start_date }}</td>
+                    <td>{{ booking.end_date }}</td>
+                    <td>${{ booking.total_amount }}</td>
+                    <td>{{ booking.confirmation_code }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'delete_booking' booking.id %}">
+                            {% csrf_token %}
+                            <button type="submit" style="color: red; background: none; border: none; cursor: pointer;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have no bookings.</p>
+    {% endif %}
+   
+</body>
+
+
+<script>
+    function confirmDelete() {
+        if (confirm('Are you sure you want to delete this booking?')) {
+            // If confirmed, submit the form
+            event.target.closest('form').submit();
+        }
+    }
+</script>
+
+</html>
+</html>

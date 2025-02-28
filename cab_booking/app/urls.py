@@ -28,7 +28,8 @@ urlpatterns=[
     path('view_cabs/<pid>',views.view_cabs),
     path('tariff/',views.tariff),
     path('vehicles/', views.vehicle_rentals),
-
+    path('view_book/', views.view_book, name='view_book'),
+    path('delete-booking/<int:booking_id>/', views.delete_booking, name='delete_booking'),
     # path('book_vehicle/<int:pid>/', views.book_form),
     path('book_form/<pid>/',views. book_form),
    

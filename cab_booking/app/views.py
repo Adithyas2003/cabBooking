@@ -289,9 +289,18 @@ def contact(request):
             Contact.objects.create(full_name=full_name, email_address=email_address, message=message)
             messages.success(request, "Your message has been sent successfully!")
 
-            return redirect('contact')  # ✅ Redirect after form submission
+            return redirect('contact')  
 
-    return render(request, 'user/contact.html')  # ✅ Always return a response
+    return render(request, 'user/contact.html') 
+
+def delete_booking(request, booking_id):
+    # Ensure the user is logged in
+    if not request.user.is_authenticated:
+        return redirect('login')  # Redirect to login page if the user is not authenticated
+
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)  # Ensure the booking belongs to the logged-in user
+    booking.delete()  # Delete the booking
+    return redirect('view_book')
 
 def about(req):
     return render(req,'user/about.html')
@@ -372,7 +381,7 @@ def book_now(request, pid):
         # Print the calculated duration and total amount
         print(f"Duration in days: {date_diff} days, Total Amount: ${total_amount:.2f}")
         
-        # Generate a confirmation code (assuming you have a function for this)
+        
         confirmation_code = generate_confirmation_code(length=8)
         print(f"Generated Confirmation Code: {confirmation_code}")
         
@@ -396,6 +405,23 @@ def book_now(request, pid):
         # Render the confirmation page with the generated confirmation code
         return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
     
+def view_book(request):
+  
+    if 'user' not in request.session:
+      
+        return render(request, 'user/login.html')  
+    
+    try:
+       
+        user = User.objects.get(username=request.session['user'])
+    except User.DoesNotExist:
+       
+        return render(request, 'user/login.html')
+    
+    
+    bookings = Booking.objects.filter(user=user).order_by('-start_date')
+    
+    return render(request, 'user/viewbook.html', {'bookings': bookings})
 
 def send_confirmation_email(user_email, confirmation_code):
     subject = "Cab Booking Confirmation Code"
