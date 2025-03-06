@@ -22,29 +22,113 @@ from .models import Vehicle
 
 # Create your views here.
 
+def generate_otp():
+    return str(random.randint(100000, 999999))
+
 def shop_login(request):
     if 'admin' in request.session:
-        return redirect(shop_home)
+        return redirect('shop_home')
     if 'user' in request.session:
-        return redirect(user_home)
-    if request.method=='POST':
-        uname=request.POST['uname']
-        password=request.POST['password']
-        data=authenticate(username=uname,password=password)
-        if data:
-            login(request,data)
-            if data.is_superuser:
-                request.session['admin']=uname
-                return redirect(shop_home)
-            else:
-                request.session['user']=uname
-                return redirect(user_home)
-        else:
-            messages.warning(request, "invalid password")
-            return redirect(shop_login)
-    else:
-        return render(request,'login.html')
+        return redirect('user_home')
 
+    if request.method == 'POST':
+        uname = request.POST['uname']
+        password = request.POST['password']
+        user = authenticate(username=uname, password=password)  # Authenticate User
+
+        if user:
+            # ✅ If the user is an admin, log them in directly (NO OTP)
+            if user.is_superuser:
+                login(request, user)  # Direct login for admin
+                request.session['admin'] = uname  # Store admin in session
+                return redirect('shop_home')  # Redirect admin to shop_home
+
+            # ✅ If the user is NOT an admin, require OTP verification
+            else:
+                otp = generate_otp()  # Generate OTP
+                request.session['otp'] = otp  # Store OTP in session
+                request.session['uname'] = uname  # Store username in session
+
+                # Send OTP to the User's email
+                send_mail(
+                    'Your OTP for Login',
+                    f'Your OTP is {otp}. Please enter it to complete your login.',
+                    'your_email@example.com',  # Replace with sender email
+                    [user.email],  # Receiver's email
+                    fail_silently=False,
+                )
+
+                return redirect('verify_otp')  # Redirect to OTP verification page
+
+        else:
+            messages.warning(request, "Invalid username or password")
+            return redirect('shop_login')
+
+    return render(request, 'login.html')
+
+def verify_otp(request):
+    uname = request.session.get('uname')
+    stored_otp = request.session.get('otp')
+
+    # Check if session expired or missing values
+    if not uname or not stored_otp:
+        messages.error(request, "Session expired. Please log in again.")
+        return redirect('shop_login')
+
+    if request.method == "POST":
+        # Handle OTP Resend
+        if "resend_otp" in request.POST:
+            try:
+                user = User.objects.get(username=uname)
+                new_otp = generate_otp()
+                request.session['otp'] = new_otp  # Store new OTP in session
+
+                # Send new OTP email
+                send_mail(
+                    'Your New OTP',
+                    f'Your new OTP is {new_otp}. Please enter it to verify your login.',
+                    'your_email@example.com',  # Replace with sender email
+                    [user.email],
+                    fail_silently=False,
+                )
+
+                messages.success(request, "A new OTP has been sent to your email.")
+                return redirect('verify_otp')
+
+            except User.DoesNotExist:
+                messages.error(request, "User not found.")
+                return redirect('shop_login')
+
+        # ✅ Get entered OTP safely
+        entered_otp = request.POST.get('otp', '')
+
+        # ✅ Verify OTP
+        if entered_otp == stored_otp:
+            try:
+                user = User.objects.get(username=uname)
+
+                # ✅ If user is admin, deny OTP-based login (should never reach here)
+                if user.is_superuser:
+                    messages.error(request, "Admins do not require OTP verification.")
+                    return redirect('shop_login')
+
+                login(request, user)  # ✅ Log in the normal user
+
+                # ✅ Clear OTP from session after successful login
+                del request.session['otp']
+                request.session['user'] = uname  # Store user in session
+
+                return redirect('user_home')  # ✅ Redirect normal user to user_home
+
+            except User.DoesNotExist:
+                messages.error(request, "User not found.")
+                return redirect('shop_login')
+
+        else:
+            messages.error(request, "Invalid OTP. Please try again.")
+            return redirect('verify_otp')
+
+    return render(request, 'user/verify_otp.html')
 def shop_home(req):
     cabs=Cab.objects.all()
     return render(req,'admin/home.html',{'Cab':cabs})
