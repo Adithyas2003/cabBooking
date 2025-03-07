@@ -22,7 +22,7 @@ urlpatterns=[
 
     path('user/home/', views.user_home, name='user_home'),  # Make sure this is correctly defined
     path('user/logout/',views.e_shop_logout),
-
+    path('user/payment_success/',views.payment_success, name='payment_success'),
     path('register/',views.Register),
     path('user/contact/', views.contact, name='contact'),  
     path('user/about/',views.about),

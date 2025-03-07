@@ -86,7 +86,7 @@
         <h2>OTP Verification</h2>
         <p>Please enter the OTP sent to your email.</p>
 
-        <!-- Display messages -->
+       
         {% if messages %}
         <div class="error-message">
             {% for message in messages %}
@@ -95,7 +95,7 @@
         </div>
         {% endif %}
 
-        <!-- OTP Verification Form -->
+       
         <form method="POST">
             {% csrf_token %}
             <label for="otp">Enter OTP:</label>
@@ -103,7 +103,7 @@
             <button type="submit">Verify</button>
         </form>
                 
-        <!-- Resend OTP Button -->
+       
         <form method="POST">
             {% csrf_token %}
             <button type="submit" name="resend_otp" style="background: #f39c12; color: white; border: none; padding: 10px; width: 100%; margin-top: 10px; cursor: pointer;">

@@ -136,3 +136,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'a65829427@gmail.com'  # Replace with your email
 EMAIL_HOST_PASSWORD = 'qlwb sckv xnxr ijbh'  # Replace with your password
+
+RAZORPAY_KEY_ID = "rzp_test_9Xrp9Bhq7ahHhD"
+RAZORPAY_KEY_SECRET = "GD74IJqSH6QsTqOJ0hMFLdD8"

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Payment</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <h2>Complete Your Payment</h2>
+    <p>Amount: ₹{{ amount }}</p>
+    
+    <button id="pay-button">Pay Now</button>
+
+    <script>
+        var options = {
+            "key": "{{ key }}",
+            "amount": "{{ amount }}" * 100,  // Razorpay needs amount in paise
+            "currency": "INR",
+            "name": "Cab Booking",
+            "description": "Payment for your cab booking",
+            "order_id": "{{ order_id }}",
+            "handler": function (response) {
+                // Redirect to payment success with the payment details
+                window.location.href = "/user/payment_success/?payment_id=" + response.razorpay_payment_id + "&order_id=" + "{{ order_id }}";
+            },
+            "prefill": {
+                "name": "{{ request.user.username }}",
+                "email": "{{ request.user.email }}"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        var rzp = new Razorpay(options);
+        document.getElementById("pay-button").onclick = function (e) {
+            rzp.open();
+            e.preventDefault();
+        };
+    </script>
+</body>
+</html>

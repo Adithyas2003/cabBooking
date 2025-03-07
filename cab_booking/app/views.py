@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-
-
+import razorpay
+import pkg_resources
 from .models import *
 from .forms import *
 from django.utils.crypto import get_random_string
@@ -16,7 +16,7 @@ import random
 from datetime import datetime
 # from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Booking
 from .models import Vehicle
 
@@ -236,7 +236,6 @@ def book_form(request, pid):
 
 
 
-
 def generate_confirmation_code(length=8):
     """Generate a random alphanumeric confirmation code of a given length."""
     # Create a pool of uppercase and lowercase letters + digits
@@ -427,68 +426,112 @@ def generate_confirmation_code(length=8):
   
    
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
+razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
 def book_now(request, pid):
-    cab = Cab.objects.get(pk=pid)  # Fetch the cab based on the given id (pid)
-    user = User.objects.get(username=request.session['user'])  # Get the logged-in user
+    cab = get_object_or_404(Cab, pk=pid)
     
+    # Ensure user is logged in
+    if 'user' not in request.session:
+        return JsonResponse({"error": "User not logged in"}, status=403)
+
+    user = get_object_or_404(User, username=request.session['user'])
+
     if request.method == 'POST':
-        # Collect form data
-        name = request.POST['name']
-        phone_number = request.POST['phone_number']
-        address = request.POST['address']
-        location =request.POST['location']
-        start_date = request.POST['start_date']
-        end_date = request.POST['end_date']
-        vehicle_type = request.POST['vehicle_type']
-        
-        # Extract price and days from the form data
-        price = float(cab.price)  # Use the price of the cab from the model (assuming `price` field exists on the `Cab` model)
-        days = int(request.POST.get('days', 0))  # Calculate the number of days (if days are provided in the form)
+        try:
+            # Collect form data
+            name = request.POST.get('name', '').strip()
+            phone_number = request.POST.get('phone_number', '').strip()
+            address = request.POST.get('address', '').strip()
+            location = request.POST.get('location', '').strip()
+            start_date = request.POST.get('start_date', '').strip()
+            end_date = request.POST.get('end_date', '').strip()
 
-        # Calculate the total amount
-                # Fetch the price of the cab (price per day)
-        price = float(cab.price)  # Assuming 'price' is a field in the Cab model, which is the price per day
-        
-        # Calculate the number of days between the start date and end date
-        date1 = datetime.strptime(start_date, "%Y-%m-%d").date()
-        date2 = datetime.strptime(end_date, "%Y-%m-%d").date()
-        date_diff = (date2 - date1).days  # Number of days between start and end date
-        
-        # Ensure the duration is valid (positive number of days)
-        if date_diff <= 0:
-            return render(request, 'user/error_page.html', {'error': "Invalid date range. End date must be after start date."})
+            if not all([name, phone_number, address, location, start_date, end_date]):
+                return render(request, 'user/error_page.html', {'error': "All fields are required."})
 
-        # Calculate the total amount (price per day * number of days)
-        total_amount = price * date_diff
-        
-        # Print the calculated duration and total amount
-        print(f"Duration in days: {date_diff} days, Total Amount: ${total_amount:.2f}")
-        
-        
-        confirmation_code = generate_confirmation_code(length=8)
-        print(f"Generated Confirmation Code: {confirmation_code}")
-        
-        # Create and save the booking record in the database
-        booking = Booking.objects.create(
-            user=user,
-            name=name,
-            phone_number=phone_number,
-            address=address,
-            location=location,
-            start_date=start_date,
-            end_date=end_date,
-            vehicle=cab,
-            confirmation_code=confirmation_code,
-            total_amount=total_amount
-        )
-        booking.save()
-        send_confirmation_email(user.email, confirmation_code)
+            # Convert dates and validate
+            date1 = datetime.strptime(start_date, "%Y-%m-%d").date()
+            date2 = datetime.strptime(end_date, "%Y-%m-%d").date()
+            date_diff = (date2 - date1).days
 
-        
-        # Render the confirmation page with the generated confirmation code
-        return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
-    
+            if date_diff <= 0:
+                return render(request, 'user/error_page.html', {'error': "Invalid date range. End date must be after start date."})
+
+            # Calculate total price
+            price_per_day = float(cab.price)
+            total_amount = price_per_day * date_diff
+            total_amount_paise = int(total_amount * 100)  # Razorpay uses paise
+
+            # Generate a unique confirmation code
+            confirmation_code = generate_confirmation_code(length=8)
+
+            # Create an order in Razorpay
+            order_data = {
+                "amount": total_amount_paise,  # Amount in paise
+                "currency": "INR",
+                "payment_capture": "1"  # Auto-capture payment
+            }
+            order = razorpay_client.order.create(data=order_data)
+
+            # Save booking record with payment pending
+            booking = Booking.objects.create(
+                user=user,
+                name=name,
+                phone_number=phone_number,
+                address=address,
+                location=location,
+                start_date=start_date,
+                end_date=end_date,
+                vehicle=cab,
+                confirmation_code=confirmation_code,
+                total_amount=total_amount,
+                payment_status="PENDING",  # Mark as pending until payment is completed
+                razorpay_order_id=order["id"]
+            )
+            booking.save()
+
+            # Pass order details to payment page
+            return render(request, 'user/payment.html', {
+                "order_id": order["id"],
+                "amount": total_amount,
+                "key": settings.RAZORPAY_KEY_ID,
+                "confirmation_code": confirmation_code,
+            })
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=400)
+def payment_success(request):
+    payment_id = request.GET.get('payment_id')
+    order_id = request.GET.get('order_id')
+
+    try:
+        # ✅ Use .filter() to handle multiple bookings safely
+        bookings = Booking.objects.filter(razorpay_order_id=order_id)
+
+        if not bookings.exists():
+            return JsonResponse({"error": "Booking not found"}, status=404)
+
+        # ✅ Update all matching bookings (if multiple)
+        for booking in bookings:
+            booking.payment_status = "PAID"
+            booking.razorpay_payment_id = payment_id
+            booking.save()
+
+            # Send confirmation email
+            send_confirmation_email(booking.user.email, booking.confirmation_code)
+
+        # ✅ Redirect to home with a success message
+        return redirect("/?payment=success")  # You can modify this URL
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+def payment_cancel(request):
+    """Redirect to home if payment is canceled"""
+    return redirect('home')
+
 def view_book(request):
   
     if 'user' not in request.session:
@@ -566,3 +609,67 @@ def view_bookings(request):
     bookings = Booking.objects.all()  
     
     return render(request, 'admin/view_bookings.html', {'bookings': bookings})
+
+
+
+
+# original booknow:
+
+# def book_now(request, pid):
+#     cab = Cab.objects.get(pk=pid)  
+#     user = User.objects.get(username=request.session['user'])  
+    
+#     if request.method == 'POST':
+       
+#         name = request.POST['name']
+#         phone_number = request.POST['phone_number']
+#         address = request.POST['address']
+#         location =request.POST['location']
+#         start_date = request.POST['start_date']
+#         end_date = request.POST['end_date']
+#         vehicle_type = request.POST['vehicle_type']
+        
+        
+#         price = float(cab.price)  
+#         days = int(request.POST.get('days', 0))  
+
+      
+#         price = float(cab.price)  
+        
+       
+#         date1 = datetime.strptime(start_date, "%Y-%m-%d").date()
+#         date2 = datetime.strptime(end_date, "%Y-%m-%d").date()
+#         date_diff = (date2 - date1).days  
+       
+#         if date_diff <= 0:
+#             return render(request, 'user/error_page.html', {'error': "Invalid date range. End date must be after start date."})
+
+    
+#         total_amount = price * date_diff
+        
+       
+#         print(f"Duration in days: {date_diff} days, Total Amount: ${total_amount:.2f}")
+        
+        
+#         confirmation_code = generate_confirmation_code(length=8)
+#         print(f"Generated Confirmation Code: {confirmation_code}")
+        
+       
+#         booking = Booking.objects.create(
+#             user=user,
+#             name=name,
+#             phone_number=phone_number,
+#             address=address,
+#             location=location,
+#             start_date=start_date,
+#             end_date=end_date,
+#             vehicle=cab,
+#             confirmation_code=confirmation_code,
+#             total_amount=total_amount
+#         )
+#         booking.save()
+#         send_confirmation_email(user.email, confirmation_code)
+
+        
+#         return render(request, 'user/booking_confirmation.html', {'confirmation_code': confirmation_code})
+    

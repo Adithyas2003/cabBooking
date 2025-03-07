@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-top: 100px;
+        }
+        .success-message {
+            color: green;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 class="success-message">✅ Payment Successful!</h2>
+    <p>Your booking is confirmed.</p>
+    <p>Redirecting to home page in <span id="countdown">5</span> seconds...</p>
+
+    <script>
+        let seconds = 5;
+        let countdown = document.getElementById("countdown");
+
+        function updateCountdown() {
+            seconds--;
+            countdown.textContent = seconds;
+            if (seconds <= 0) {
+                window.location.href = "/";
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+    </script>
+
+</body>
+</html>
+

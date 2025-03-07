@@ -31,6 +31,9 @@ class Booking(models.Model):
     address = models.TextField() 
     location = models.CharField(max_length=255,null=True,blank=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
+    payment_status = models.CharField(max_length=20, choices=[("PENDING", "Pending"), ("PAID", "Paid")], default="PENDING")
+    razorpay_order_id = models.CharField(max_length=100, blank=True, null=True)
+    razorpay_payment_id = models.CharField(max_length=100, blank=True, null=True)
     def __str__(self):
         return f"Booking for {self.vehicle.vehicle_type} by {self.user.username}"
 
