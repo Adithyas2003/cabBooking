@@ -5,10 +5,14 @@ from django.core.mail import send_mail
 from django.conf import settings
 import razorpay
 import pkg_resources
+import logging
+from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from .forms import *
 from django.utils.crypto import get_random_string
 import os
+import json
+from django.http import JsonResponse
 import string
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -426,7 +430,81 @@ def generate_confirmation_code(length=8):
   
    
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
-razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+def demo(request,pid):
+    if request.method == "POST":
+        name = request.POST.get('name', '').strip()
+        phone_number = request.POST.get('phone_number', '').strip()
+        address = request.POST.get('address', '').strip()
+        location = request.POST.get('location', '').strip()
+        start_date = request.POST.get('start_date', '').strip()
+        end_date = request.POST.get('end_date', '').strip()
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        razorpay_order = client.order.create(
+            {"amount":  100, "currency": "INR", "payment_capture": "1"}
+        )
+        order_id=razorpay_order["id"]
+        booking = Booking.objects.create(
+    
+                name=name,
+                phone_number=phone_number,
+                address=address,
+                location=location,
+                start_date=start_date,
+                end_date=end_date,
+                razorpay_order_id=order_id,
+                
+                payment_status="PENDING",  # Mark as pending until payment is completed
+           
+            )
+        booking.save()
+        return render(
+            request,
+            "user/payment.html",
+            {
+                "callback_url": "http://" + "127.0.0.1:8000" + "razorpay/callback",
+                "razorpay_key": settings.RAZORPAY_KEY_ID,
+                "order": 'order',
+            },
+        )
+    return render(request, "user/payment.html")
+
+
+@csrf_exempt
+def callback(request):
+    def verify_signature(response_data):
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        return client.utility.verify_payment_signature(response_data)
+
+    if "razorpay_signature" in request.POST:
+        payment_id = request.POST.get("razorpay_payment_id", "")
+        provider_order_id = request.POST.get("razorpay_order_id", "")
+        signature_id = request.POST.get("razorpay_signature", "")
+        order = Booking.objects.get(provider_order_id=provider_order_id)
+        order.payment_id = payment_id
+        order.signature_id = signature_id
+        order.save()
+        if not verify_signature(request.POST):
+            order.status = PaymentStatus.SUCCESS
+            order.save()
+            return render(request, "callback.html", context={"status": order.status})   # callback giving html page
+            #  or  return redirect(function name of callback giving html page)
+        else:
+            order.status = PaymentStatus.FAILURE
+            order.save()
+            return render(request, "callback.html", context={"status": order.status})  # callback giving html page
+            #  or  return redirect(function name of callback giving html page)
+
+    else:
+        payment_id = json.loads(request.POST.get("error[metadata]")).get("payment_id")
+        provider_order_id = json.loads(request.POST.get("error[metadata]")).get(
+            "order_id"
+        )
+        order =Booking.objects.get(provider_order_id=provider_order_id)
+        order.payment_id = payment_id
+        order.status = PaymentStatus.FAILURE
+        order.save()
+        return render(request, "callback.html", context={"status": order.status}) 
 
 def book_now(request, pid):
     cab = get_object_or_404(Cab, pk=pid)
@@ -456,7 +534,7 @@ def book_now(request, pid):
             date_diff = (date2 - date1).days
 
             if date_diff <= 0:
-                return render(request, 'user/error_page.html', {'error': "Invalid date range. End date must be after start date."})
+                return render(request, 'user/booknow.html', {'error': "Invalid date range. End date must be after start date."})
 
             # Calculate total price
             price_per_day = float(cab.price)
@@ -490,44 +568,88 @@ def book_now(request, pid):
                 razorpay_order_id=order["id"]
             )
             booking.save()
-
+            print('booking saved')
             # Pass order details to payment page
-            return render(request, 'user/payment.html', {
-                "order_id": order["id"],
-                "amount": total_amount,
-                "key": settings.RAZORPAY_KEY_ID,
+            return render(
+            request,
+            "payment.html",
+            {
+                "callback_url": "http://" + "127.0.0.1:8000" + "razorpay/callback",
+                "razorpay_key": settings.RAZORPAY_KEY_ID,
+                "Order": order,
                 "confirmation_code": confirmation_code,
-            })
+            },
+        )
+        
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
+
+
+
+       
 def payment_success(request):
     payment_id = request.GET.get('payment_id')
     order_id = request.GET.get('order_id')
 
     try:
-        # ✅ Use .filter() to handle multiple bookings safely
+        
         bookings = Booking.objects.filter(razorpay_order_id=order_id)
 
         if not bookings.exists():
             return JsonResponse({"error": "Booking not found"}, status=404)
 
-        # ✅ Update all matching bookings (if multiple)
+      
         for booking in bookings:
             booking.payment_status = "PAID"
             booking.razorpay_payment_id = payment_id
             booking.save()
 
-            # Send confirmation email
+            
             send_confirmation_email(booking.user.email, booking.confirmation_code)
 
-        # ✅ Redirect to home with a success message
-        return redirect("/?payment=success")  # You can modify this URL
+        return redirect(" payment_success")  
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+    
+@csrf_exempt
+def callback(request):
+    def verify_signature(response_data):
+        client=razorpay.Client(auth=(settings.RAZORPAY_KEY_ID,settings.RAZORPAY_KEY_SECERT))
+        return client.utility.verify_payment_signature(response_data)
+    
+    if "razorpay_signature" in request.POST:
+        payment_id=request.POST.get("razorpay_payment_id","")
+        provider_order_id=request.POST.get("razorpay_order_id","")
+        signature_id=request.POST.get("razorpay_signature","")
+        order=Booking.objects.get(provider_order_id=provider_order_id)
+        order.payment_id=payment_id
+        order.signature_id=signature_id
+        order.save()
+
+        if  verify_signature(request.POST):
+            order.status=PaymentStatus.SUCCESS
+            order.save()
+            return render(request,"payment_success.html",context={"status":order.status})
+        else:
+            order.status=PaymentStatus.FAILURE
+            order.save()
+            return render(request,"payment_cancel.html",context={"status":order.status})
+    else:
+        payment_id = json.loads(request.POST.get("error[metadata]")).get("payment_id")
+        provider_order_id = json.loads(request.POST.get("error[metadata]")).get(
+            "order_id"
+        )
+        order=Booking.objects.get(provider_order_id=provider_order_id)
+        order.payment_id=payment_id
+        order.status=PaymentStatus.FAILURE
+        order.save()
+        return redirect(request,"callback.html",context={"status":order.status})
+
+        
 def payment_cancel(request):
     """Redirect to home if payment is canceled"""
     return redirect('home')

@@ -35,7 +35,9 @@ urlpatterns=[
     # path('book_vehicle/<int:pid>/', views.book_form),
     path('user/book_form/<pid>/',views. book_form),
    
-    path('book_now/<int:pid>',views.book_now, name='book_now'),
+    # path('book_now/<int:pid>',views.book_now, name='book_now'),
+    path('book_now/<int:pid>',views.demo, name='book_now'),
+    
  
     # path('book_now/<int:pid>/', views.book_now),  # Vehicle selected by 'pid'
     path('user/submit_booknow/',views. submit_booknow),
